@@ -1,0 +1,46 @@
+
+### Vec Initialization
+
+let v = Vec::new();                      // Empty
+let v = vec![1, 2, 3];                   // Macro init
+let mut v: Vec<i32> = Vec::with_capacity(10); // Preallocated
+
+### Adding Elements
+
+v.push(42);       // Add to end
+v.insert(1, 99);  // Insert at index 1, shifting right
+
+### Removing Elements
+
+v.pop();           // Remove last element, returns Option<T>
+v.remove(1);       // Remove at index, shifts left
+v.retain(|x| *x != 42); // Remove elements that match predicate
+
+
+### Iterations
+
+for x in v.iter() {
+    println!("{}", x);
+}
+
+for x in v.iter_mut() {
+    *x += 1;
+}
+
+for x in v.into_iter() {
+    println!("Owned {}", x);
+}
+
+
+### Accessing Elements
+
+v[i];             // Direct access, panics on invalid index
+v.get(i);         // Safe access, returns Option<&T>
+v.get_mut(i);     // Safe, mutable access
+
+### Filter and Search
+
+v.contains(&3);                  // true/false
+v.iter().position(|x| *x == 42); // Option<usize>
+v.iter().find(|x| **x > 10);     // Option<&T>
+v.iter().filter(|x| **x % 2 == 0).collect::<Vec<_>>();

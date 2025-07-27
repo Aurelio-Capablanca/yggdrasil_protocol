@@ -1,0 +1,27 @@
+
+// first sort all the Nodes, 
+// then get by them all the needed elements and apply the indicated operation,
+// while there's needed a mini version of this evaluator, but applied just 
+// to numerical expressions, then the booleans should be evaluated later to end up 
+// in a single boolean definition
+/*
+Arithmetical Operations to make: 
+
+Sum (+)
+Rest (-)
+Multiplication (*)
+Division (/)
+MOD (%) 
+
+Boolean Operations: 
+
+NOT
+AND 
+OR
+
+Future ones 
+XOR
+XAND
+more to Guess out...
+
+*/

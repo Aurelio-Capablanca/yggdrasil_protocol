@@ -31,6 +31,8 @@ for x in v.into_iter() {
     println!("Owned {}", x);
 }
 
+data.iter().enumerate().for_each(|(i, x)| println!("Index {i}: {x}"));
+
 
 ### Accessing Elements
 
@@ -44,3 +46,27 @@ v.contains(&3);                  // true/false
 v.iter().position(|x| *x == 42); // Option<usize>
 v.iter().find(|x| **x > 10);     // Option<&T>
 v.iter().filter(|x| **x % 2 == 0).collect::<Vec<_>>();
+
+
+### MORE Joy
+
+let numbers = vec![1, 2, 3, 4, 5];
+
+// ✅ Filter
+let evens: Vec<_> = numbers.iter().filter(|x| *x % 2 == 0).collect();
+
+// ✅ Map
+let squares: Vec<_> = numbers.iter().map(|x| x * x).collect();
+
+// ✅ Sum
+let total: i32 = numbers.iter().sum();
+
+// ✅ Fold (accumulator)
+let product: i32 = numbers.iter().fold(1, |acc, x| acc * x);
+
+// ✅ Enumerate
+numbers.iter().enumerate().for_each(|(i, x)| println!("{i}: {x}"));
+
+// ✅ Zip (pair two lists)
+let other = vec![10, 20, 30, 40, 50];
+numbers.iter().zip(other.iter()).for_each(|(a, b)| println!("{a} + {b} = {}", a + b));

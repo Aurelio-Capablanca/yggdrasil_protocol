@@ -1,14 +1,32 @@
-use crate::core::parse_sentences::parse_strings_to_expression;
 use crate::structure::operator_tree::Operator;
-use std::ptr::null;
 
 #[derive(Debug)]
 pub enum Token {
-    Number(f64),
+    // Arithmetic
     Plus,
     Minus,
     Multiply,
     Divide,
+
+    // Comparison
+    EqualEqual,
+    NotEqual,
+    Greater,
+    GreaterEqual,
+    Less,
+    LessEqual,
+
+    // Logical
+    And, // &&
+    Or,  // ||
+    Not, // !
+
+    // Values
+    True,
+    False,
+    Number(f64),
+
+    // Punctuation
     LParenthesis,
     RParenthesis,
 }

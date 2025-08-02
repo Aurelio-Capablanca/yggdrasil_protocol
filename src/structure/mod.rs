@@ -1,2 +1,2 @@
 pub mod expression;
-mod operatorTree;
+pub mod operator_tree;

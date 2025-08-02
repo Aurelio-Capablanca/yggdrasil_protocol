@@ -73,20 +73,6 @@ pub fn tokenization(mathematical_sentence: &str) -> Vec<Token> {
     tokens
 }
 
-// pub fn parse_to_operation(tokens: &Vec<Token>) -> Operator<f64> {
-//
-//     for token in tokens {
-//         match token {
-//             Token::LParenthesis => {
-//                 match token {
-//                     To
-//                     _=> print!("Ignoring data catch!")
-//                 }
-//             },
-//            _ => print!("Ignoring data catch!")
-//         }
-//     }
-// }
 
 pub fn parse_expression(tokens: &mut Vec<Token>) -> Operator<f64> {
     let parsed = parse_add_sub(tokens);

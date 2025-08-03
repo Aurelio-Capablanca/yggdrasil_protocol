@@ -11,6 +11,8 @@ fn main() {
     print!("\n");
     parse_sentences::parse_strings_to_expression(&"12 DIV 2 * 3 -18 / ( (17 MOD 3)/2 * 7 – 3) / ( 2 *2 - 8 ) + 15 DIV 3".to_string());
     print!("\n");
+    tokenization::tokenization("( 2 *2 - 8 ) + 15 && 9 + 9");
+    print!("\n");
     let mut tokens = tokenization::tokenization("( 2 *2 - 8 ) + 15");
     print!("\n");
     let operator = tokenization::parse_expression(&mut tokens);

@@ -9,7 +9,7 @@ pub enum Token {
     Divide,
 
     // Comparison
-    EqualEqual,
+    Equals,
     NotEqual,
     Greater,
     GreaterEqual,
@@ -75,6 +75,46 @@ pub fn tokenization(mathematical_sentence: &str) -> Vec<Token> {
                 }
                 tokens.push(Token::RParenthesis);
             }
+            '&' | '|' | '=' | '!' => {
+                if !numbers_buffer.is_empty() {
+                    tokens.push(Token::Number(numbers_buffer.parse().unwrap()));
+                    numbers_buffer.clear();
+                }
+                let mut chars = mathematical_sentence.chars().peekable();
+                while let Some(cases) = chars.next() {
+                    match cases {
+                        '&' => {
+                            if let Some('&') = chars.peek() {
+                                chars.next();
+                                tokens.push(Token::And);
+                            }
+                        }
+                        '|' => {
+                            if let Some('|') = chars.peek() {
+                                chars.next();
+                                tokens.push(Token::Or);
+                            }
+                        }
+                        '!' => {
+                            if let Some('=') = chars.peek(){
+                                chars.next();
+                                tokens.push(Token::NotEqual);
+                            } else {
+                              tokens.push(Token::Not);   
+                            }
+                        }
+                        '=' => {
+                            if let Some('=') = chars.peek(){
+                                chars.next();
+                                tokens.push(Token::Equals)
+                            }
+                        }
+                        _ => {
+                            print!("Do nothing! at? {:?}",cases)
+                        }
+                    }
+                }
+            }
             ' ' => {
                 if !numbers_buffer.is_empty() {
                     tokens.push(Token::Number(numbers_buffer.parse().unwrap()));
@@ -91,10 +131,9 @@ pub fn tokenization(mathematical_sentence: &str) -> Vec<Token> {
     tokens
 }
 
-
 pub fn parse_expression(tokens: &mut Vec<Token>) -> Operator<f64> {
     let parsed = parse_add_sub(tokens);
-    print!("{:?}",parsed);
+    print!("{:?}", parsed);
     parsed
 }
 

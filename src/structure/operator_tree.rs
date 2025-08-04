@@ -12,4 +12,8 @@ pub enum Operator<T> {
     Not(Box<Operator<T>>),
     Equals(Box<Operator<T>>, Box<Operator<T>>),
     NotEquals(Box<Operator<T>>, Box<Operator<T>>),
+    Greater(Box<Operator<T>>, Box<Operator<T>>),
+    GreaterEqual(Box<Operator<T>>, Box<Operator<T>>),
+    Less(Box<Operator<T>>, Box<Operator<T>>),
+    LessEqual(Box<Operator<T>>, Box<Operator<T>>),
 }

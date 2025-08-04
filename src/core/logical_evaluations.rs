@@ -1,6 +1,6 @@
 use crate::structure::expression::Expression;
-use crate::structure::operator_tree::Operator;
 use std::collections::HashMap;
+use crate::structure::operator_tree::Operator;
 
 macro_rules!  hashmap {
     ($ ($key : expr => $val : expr), *) => {{
@@ -9,8 +9,6 @@ macro_rules!  hashmap {
         map
     }};
 }
-
-fn process(mut expression_get: &str) {}
 
 fn evaluation_boolean(expression: &Expression<String>, values: &HashMap<String, bool>) -> bool {
     match expression {
@@ -26,28 +24,29 @@ fn evaluation_boolean(expression: &Expression<String>, values: &HashMap<String, 
     }
 }
 
-// pub fn operation_arithmeticals(operator: &Operator<f64>) -> f64 {
-//     match operator {
-//         Operator::Val(n) => *n,
-//         Operator::Sum(a, b) => operation_arithmeticals(a) + operation_arithmeticals(b),
-//         Operator::Subtract(a, b) => operation_arithmeticals(a) - operation_arithmeticals(b),
-//         Operator::Multiply(a, b) => operation_arithmeticals(a) * operation_arithmeticals(b),
-//         Operator::Division(a, b) => operation_arithmeticals(a) / operation_arithmeticals(b),
-//         _=> {let data: f64 = 0.0 }
-//     }
-// }
-
-pub fn test() {
-    let variables =
-        hashmap!["A".to_string() => true, "B".to_string() => false, "C".to_string() => true];
-    // (A AND (NOT B)) OR C
-    let expression = Expression::OR(
-        Box::new(Expression::AND(
-            Box::new(Expression::VAR("A".to_string())),
-            Box::new(Expression::NOT(Box::new(Expression::VAR("B".to_string())))),
-        )),
-        Box::new(Expression::VAR("C".to_string())),
-    );
-    let result = evaluation_boolean(&expression, &variables);
-    print!("The expression given results in: {}", result);
+pub fn ar_operations(operator: &Operator<f64>) -> f64 {
+    match operator {
+        Operator::Val(n) => *n,
+        Operator::Sum(a, b) => ar_operations(a) + ar_operations(b),
+        Operator::Subtract(a, b) => ar_operations(a) - ar_operations(b),
+        Operator::Multiply(a, b) => ar_operations(a) * ar_operations(b),
+        Operator::Division(a, b) => ar_operations(a) / ar_operations(b),
+        //Operator::And(a,b) => ar_operations(a) && ar_operations(b),
+        _=> {return 0.0}
+    }
 }
+
+// pub fn test() {
+//     let variables =
+//         hashmap!["A".to_string() => true, "B".to_string() => false, "C".to_string() => true];
+//     // (A AND (NOT B)) OR C
+//     let expression = Expression::OR(
+//         Box::new(Expression::AND(
+//             Box::new(Expression::VAR("A".to_string())),
+//             Box::new(Expression::NOT(Box::new(Expression::VAR("B".to_string())))),
+//         )),
+//         Box::new(Expression::VAR("C".to_string())),
+//     );
+//     let result = evaluation_boolean(&expression, &variables);
+//     print!("The expression given results in: {}", result);
+// }

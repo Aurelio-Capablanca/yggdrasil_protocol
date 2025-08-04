@@ -26,15 +26,16 @@ fn evaluation_boolean(expression: &Expression<String>, values: &HashMap<String, 
     }
 }
 
-pub fn operation_arithmeticals(operator: &Operator<f64>) -> f64 {
-    match operator {
-        Operator::Val(n) => *n,
-        Operator::Sum(a, b) => operation_arithmeticals(a) + operation_arithmeticals(b),
-        Operator::Subtract(a, b) => operation_arithmeticals(a) - operation_arithmeticals(b),
-        Operator::Multiply(a, b) => operation_arithmeticals(a) * operation_arithmeticals(b),
-        Operator::Division(a, b) => operation_arithmeticals(a) / operation_arithmeticals(b),
-    }
-}
+// pub fn operation_arithmeticals(operator: &Operator<f64>) -> f64 {
+//     match operator {
+//         Operator::Val(n) => *n,
+//         Operator::Sum(a, b) => operation_arithmeticals(a) + operation_arithmeticals(b),
+//         Operator::Subtract(a, b) => operation_arithmeticals(a) - operation_arithmeticals(b),
+//         Operator::Multiply(a, b) => operation_arithmeticals(a) * operation_arithmeticals(b),
+//         Operator::Division(a, b) => operation_arithmeticals(a) / operation_arithmeticals(b),
+//         _=> {let data: f64 = 0.0 }
+//     }
+// }
 
 pub fn test() {
     let variables =

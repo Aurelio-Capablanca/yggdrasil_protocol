@@ -19,7 +19,9 @@ pub enum Token {
     Or,  // ||
     Not, // !
     
+    //Values
     Number(f64),
+    Boolean(bool),
 
     // Punctuation
     LParenthesis,

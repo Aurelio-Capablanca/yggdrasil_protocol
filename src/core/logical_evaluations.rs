@@ -1,4 +1,4 @@
-use crate::structure::expression::Expression;
+//use crate::structure::expression::Expression;
 use std::collections::HashMap;
 use crate::structure::operator_tree::Operator;
 
@@ -10,19 +10,19 @@ macro_rules!  hashmap {
     }};
 }
 
-fn evaluation_boolean(expression: &Expression<String>, values: &HashMap<String, bool>) -> bool {
-    match expression {
-        Expression::VAR(def) => *values.get(def).unwrap_or(&false),
-        Expression::NOT(def) => !evaluation_boolean(def, values),
-        Expression::OR(left, right) => {
-            evaluation_boolean(left, values) || evaluation_boolean(right, values)
-        }
-        Expression::AND(left, right) => {
-            evaluation_boolean(left, values) && evaluation_boolean(right, values)
-        }
-        &_ => false,
-    }
-}
+// fn evaluation_boolean(expression: &Expression<String>, values: &HashMap<String, bool>) -> bool {
+//     match expression {
+//         Expression::VAR(def) => *values.get(def).unwrap_or(&false),
+//         Expression::NOT(def) => !evaluation_boolean(def, values),
+//         Expression::OR(left, right) => {
+//             evaluation_boolean(left, values) || evaluation_boolean(right, values)
+//         }
+//         Expression::AND(left, right) => {
+//             evaluation_boolean(left, values) && evaluation_boolean(right, values)
+//         }
+//         &_ => false,
+//     }
+// }
 
 pub fn ar_operations(operator: &Operator<f64>) -> f64 {
     match operator {

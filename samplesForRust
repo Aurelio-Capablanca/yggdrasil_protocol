@@ -70,3 +70,9 @@ numbers.iter().enumerate().for_each(|(i, x)| println!("{i}: {x}"));
 // ✅ Zip (pair two lists)
 let other = vec![10, 20, 30, 40, 50];
 numbers.iter().zip(other.iter()).for_each(|(a, b)| println!("{a} + {b} = {}", a + b));
+
+
+// powers on Rust!
+let x = 2.0_f64;
+let res1 = x.powi(4);     // 16.0 (integer exponent, faster)
+let res2 = x.powf(4.5);   // 22.627416997969522 (fractional exponent)

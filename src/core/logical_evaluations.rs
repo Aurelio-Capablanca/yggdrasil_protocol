@@ -1,6 +1,9 @@
 //use crate::structure::expression::Expression;
-use std::collections::HashMap;
+use crate::structure::calculus_structure::Expression;
 use crate::structure::operator_tree::Operator;
+use crate::structure::token::Token;
+use std::collections::HashMap;
+use crate::structure::response::response;
 
 macro_rules!  hashmap {
     ($ ($key : expr => $val : expr), *) => {{
@@ -31,8 +34,29 @@ pub fn ar_operations(operator: &Operator<f64>) -> f64 {
         Operator::Subtract(a, b) => ar_operations(a) - ar_operations(b),
         Operator::Multiply(a, b) => ar_operations(a) * ar_operations(b),
         Operator::Division(a, b) => ar_operations(a) / ar_operations(b),
-        //Operator::And(a,b) => ar_operations(a) && ar_operations(b),
-        _=> {return 0.0}
+        _ => return 0.0,
+    }
+}
+
+pub fn arithmetics(expression: &Expression) -> response {
+    match expression {
+        Expression::Number(n) => {
+           // print!("{:?}",n);
+            response::new().set_numeric(*n)
+        }
+        //Fix here!
+        Expression::Binary { op, left, right } => match op {
+            Token::Plus => { arithmetics(left) + arithmetics(right) },
+            Token::Minus => arithmetics(left) - arithmetics(right),
+            Token::Multiply => arithmetics(left) * arithmetics(right),
+            Token::Divide => arithmetics(left) / arithmetics(right),
+            _ => response::new(),
+        },
+        _ => {
+            println!("Invalid Operation");
+           //
+            response::new()
+        }
     }
 }
 

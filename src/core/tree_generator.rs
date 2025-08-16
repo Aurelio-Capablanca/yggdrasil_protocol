@@ -1,14 +1,15 @@
 use crate::structure::operator_tree::Operator;
 use crate::structure::token::Token;
+use crate::structure::calculus_structure::Expression;
 
 fn parse_binary<F>(
     tokens: &mut Vec<Token>,
     next: F,
     ops: &[Token],
-    make_nodes: fn(Token, Operator<f64>, Operator<f64>) -> Operator<f64>,
-) -> Operator<f64>
+    make_nodes: fn(Token, Expression, Expression) -> Expression,
+) -> Expression
 where
-    F: Fn(&mut Vec<Token>) -> Operator<f64>,
+    F: Fn(&mut Vec<Token>) -> Expression,
 {
     let mut node = next(tokens);
 
@@ -25,10 +26,10 @@ where
     node
 }
 
-pub fn parse_expression(tokens: &mut Vec<Token>) -> Operator<f64> {
+pub fn parse_expression(tokens: &mut Vec<Token>) -> Expression {
     parse_boolean(tokens)
 }
-fn parse_boolean(token: &mut Vec<Token>) -> Operator<f64> {
+fn parse_boolean(token: &mut Vec<Token>) -> Expression {
     parse_binary(
         token,
         parse_add_sub,
@@ -44,48 +45,49 @@ fn parse_boolean(token: &mut Vec<Token>) -> Operator<f64> {
             Token::LessEqual
         ],
         |op, left, right| match op {
-            Token::And => Operator::And(Box::new(left), Box::new(right)),
-            Token::Or => Operator::Or(Box::new(left), Box::new(right)),
-            Token::Equals => Operator::Equals(Box::new(left), Box::new(right)),
-            Token::NotEqual => Operator::NotEquals(Box::new(left), Box::new(right)),
-            Token::Greater => Operator::Greater(Box::new(left), Box::new(right)),
-            Token::GreaterEqual => Operator::Greater(Box::new(left), Box::new(right)),
-            Token::Less => Operator::Greater(Box::new(left), Box::new(right)),
-            Token::LessEqual => Operator::Greater(Box::new(left), Box::new(right)),
+            Token::And => { Expression::Binary{op, left:Box::new(left),  right:Box::new(right)} }
+            Token::Or => {Expression::Binary {op, left:Box::new(left), right:Box::new(right)}}
+            Token::Equals => {Expression::Binary {op, left:Box::new(left), right:Box::new(right)}}
+            Token::NotEqual => {Expression::Binary {op, left:Box::new(left), right:Box::new(right)}}
+            Token::Greater => {Expression::Binary {op, left:Box::new(left), right:Box::new(right)}}
+            Token::GreaterEqual => {Expression::Binary {op, left:Box::new(left), right:Box::new(right)}}
+            Token::Less => {Expression::Binary {op, left:Box::new(left), right:Box::new(right)}}
+            Token::LessEqual => {Expression::Binary {op, left:Box::new(left), right:Box::new(right)}}
+            
             _ => unreachable!(),
         },
     )
 }
 
-fn parse_add_sub(token: &mut Vec<Token>) -> Operator<f64> {
+fn parse_add_sub(token: &mut Vec<Token>) -> Expression {
     parse_binary(
         token,
         parse_mul_div,
         &[Token::Plus, Token::Minus],
         |op, left, right| match op {
-            Token::Plus => Operator::Sum(Box::new(left), Box::new(right)),
-            Token::Minus => Operator::Subtract(Box::new(left), Box::new(right)),
+            Token::Plus => {Expression::Binary {op, left:Box::new(left), right:Box::new(right)}},
+            Token::Minus => {Expression::Binary {op, left:Box::new(left), right:Box::new(right)}},
             _ => unreachable!(),
         },
     )
 }
 
-fn parse_mul_div(tokens: &mut Vec<Token>) -> Operator<f64> {
+fn parse_mul_div(tokens: &mut Vec<Token>) -> Expression {
     parse_binary(
         tokens,
         parse_primary,
         &[Token::Multiply, Token::Divide],
         |op, left, right| match op {
-            Token::Multiply => Operator::Multiply(Box::new(left), Box::new(right)),
-            Token::Divide => Operator::Division(Box::new(left), Box::new(right)),
+            Token::Multiply => {Expression::Binary {op, left:Box::new(left), right:Box::new(right)}},
+            Token::Divide => {Expression::Binary {op, left:Box::new(left), right:Box::new(right)}},
             _ => unreachable!(),
         },
     )
 }
 
-fn parse_primary(tokens: &mut Vec<Token>) -> Operator<f64> {
+fn parse_primary(tokens: &mut Vec<Token>) -> Expression {
     match tokens.remove(0) {
-        Token::Number(n) => Operator::Val(n),
+        Token::Number(n) => Expression::Number(n),
         Token::LParenthesis => {
             let node = parse_expression(tokens);
             match tokens.remove(0) {

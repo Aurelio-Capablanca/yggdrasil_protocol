@@ -1,6 +1,7 @@
 use crate::structure::token::Token;
 
-enum Expression {
+#[derive(Debug)]
+pub enum Expression {
     Number(f64),
     Boolean(bool),
     Variable(String),

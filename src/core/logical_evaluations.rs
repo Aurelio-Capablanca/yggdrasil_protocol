@@ -1,9 +1,6 @@
-//use crate::structure::expression::Expression;
 use crate::structure::calculus_structure::Expression;
-use crate::structure::operator_tree::Operator;
 use crate::structure::token::Token;
-use std::collections::HashMap;
-use crate::structure::response::response;
+use crate::structure::response::Response;
 
 macro_rules!  hashmap {
     ($ ($key : expr => $val : expr), *) => {{
@@ -13,64 +10,26 @@ macro_rules!  hashmap {
     }};
 }
 
-// fn evaluation_boolean(expression: &Expression<String>, values: &HashMap<String, bool>) -> bool {
-//     match expression {
-//         Expression::VAR(def) => *values.get(def).unwrap_or(&false),
-//         Expression::NOT(def) => !evaluation_boolean(def, values),
-//         Expression::OR(left, right) => {
-//             evaluation_boolean(left, values) || evaluation_boolean(right, values)
-//         }
-//         Expression::AND(left, right) => {
-//             evaluation_boolean(left, values) && evaluation_boolean(right, values)
-//         }
-//         &_ => false,
-//     }
-// }
-
-pub fn ar_operations(operator: &Operator<f64>) -> f64 {
-    match operator {
-        Operator::Val(n) => *n,
-        Operator::Sum(a, b) => ar_operations(a) + ar_operations(b),
-        Operator::Subtract(a, b) => ar_operations(a) - ar_operations(b),
-        Operator::Multiply(a, b) => ar_operations(a) * ar_operations(b),
-        Operator::Division(a, b) => ar_operations(a) / ar_operations(b),
-        _ => return 0.0,
-    }
-}
-
-pub fn arithmetics(expression: &Expression) -> response {
+pub fn mathematics(expression: &Expression) -> Response {
     match expression {
-        Expression::Number(n) => {
-           // print!("{:?}",n);
-            response::new().set_numeric(*n)
-        }
-        //Fix here!
+        Expression::Number(n) => Response::new().define_numeric(*n),
+        Expression::Boolean(b ) => Response::new().define_boolean(*b),
+        Expression::Unary {op, expr} => match op {
+            Token::Not => Response::new().define_boolean(!mathematics(&expr.convert_to_boolean()).get_boolean()),
+            _=> { println!("Getting out of Unary!!!"); Response::new() }
+        },
         Expression::Binary { op, left, right } => match op {
-            Token::Plus => { arithmetics(left) + arithmetics(right) },
-            Token::Minus => arithmetics(left) - arithmetics(right),
-            Token::Multiply => arithmetics(left) * arithmetics(right),
-            Token::Divide => arithmetics(left) / arithmetics(right),
-            _ => response::new(),
+            Token::Plus => Response::new().define_numeric(mathematics(left).get_numeric() + mathematics(right).get_numeric()),
+            Token::Minus => Response::new().define_numeric(mathematics(left).get_numeric() - mathematics(right).get_numeric()),
+            Token::Multiply => Response::new().define_numeric(mathematics(left).get_numeric() * mathematics(right).get_numeric()),
+            Token::Divide => Response::new().define_numeric(mathematics(left).get_numeric() / mathematics(right).get_numeric()),
+            //booleans too!
+            Token::Equals => Response::new().define_boolean(mathematics(left).get_boolean() == mathematics(right).get_boolean()),
+            _ => Response::new(),
         },
         _ => {
             println!("Invalid Operation");
-           //
-            response::new()
+            Response::new()
         }
     }
 }
-
-// pub fn test() {
-//     let variables =
-//         hashmap!["A".to_string() => true, "B".to_string() => false, "C".to_string() => true];
-//     // (A AND (NOT B)) OR C
-//     let expression = Expression::OR(
-//         Box::new(Expression::AND(
-//             Box::new(Expression::VAR("A".to_string())),
-//             Box::new(Expression::NOT(Box::new(Expression::VAR("B".to_string())))),
-//         )),
-//         Box::new(Expression::VAR("C".to_string())),
-//     );
-//     let result = evaluation_boolean(&expression, &variables);
-//     print!("The expression given results in: {}", result);
-// }

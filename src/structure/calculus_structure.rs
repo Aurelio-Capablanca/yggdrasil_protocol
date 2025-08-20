@@ -1,6 +1,6 @@
 use crate::structure::token::Token;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum Expression {
     Number(f64),
     Boolean(bool),
@@ -24,16 +24,16 @@ impl Expression{
 
     pub fn as_numbers(&self) -> f64{
         match self {
-            Expression::Number(n ) => *n,
-            Expression::Boolean(b) => if *b {1.0} else {0.0},
-            _=> { println!("doesnt apply"); 0.0 }
+            Expression::Number(n ) => {println!("You hit here! NUMBERS as_numbers "); *n },
+            Expression::Boolean(b) => {println!("You hit here! BOOLEAN as_numbers "); if *b { 1.0 } else { 0.0 } },
+            _=> 0.0
         }
     }
 
-    pub fn convert_to_numeric(&self) -> Expression{
+    pub fn to_numeric(&self) -> Expression{
         match self {
-            Expression::Boolean(b) => Expression::Number(if *b {1.0} else {0.0}),
-            _=> {println!("doesn't apply"); Expression::Number(self.as_numbers())}
+            Expression::Boolean(b) => { println!("You hit here! to_numeric "); Expression::Number(if *b { 1.0 } else { 0.0 }) },
+            _=> self.clone()
         }
     }
 
@@ -41,15 +41,15 @@ impl Expression{
         match self {
             Expression::Number(n) =>  *n != 0.0,
             Expression::Boolean(b) => *b,
-            _=> {println!("doesnt apply"); false}
+            _=> false
         }
     }
 
 
-    pub fn convert_to_boolean(&self) -> Expression {
+    pub fn to_boolean(&self) -> Expression {
         match self {
             Expression::Number(n) => Expression::Boolean(*n != 0.0),
-            _=> Expression::Boolean(self.as_boolean())
+            _=> self.clone()
         }
     }
 }

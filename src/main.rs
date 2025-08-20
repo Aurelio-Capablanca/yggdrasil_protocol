@@ -27,7 +27,7 @@ fn main() {
 
     let mut boolean_ex = tokenization::tokenization("!65 == T");
     let expression_two = tree_generator::parse_expression(&mut boolean_ex);
-    println!("{:?}",expression_two);
+    println!("\n{:?}",expression_two);
     let result_two = logical_evaluations::mathematics(&expression_two);
     println!("\n{:?}",result_two);
     println!(" **** \n");

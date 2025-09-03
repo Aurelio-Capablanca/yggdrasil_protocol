@@ -2,14 +2,6 @@ use crate::structure::calculus_structure::Expression;
 use crate::structure::token::Token;
 use crate::structure::response::Response;
 
-macro_rules!  hashmap {
-    ($ ($key : expr => $val : expr), *) => {{
-        let mut map = ::std::collections::HashMap::new();
-        $(map.insert($key, $val); )*
-        map
-    }};
-}
-
 pub fn mathematics(expression: &Expression) -> Response {
     match expression {
         Expression::Number(n) => Response::new().define_numeric(*n),

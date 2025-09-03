@@ -23,7 +23,12 @@ pub fn tokenization(mathematical_sentence: &str) -> Vec<Token> {
             }
             '-' => {
                 set_numbers(&mut numbers_buffer, &mut tokens);
-                tokens.push(Token::Minus)
+                if let Some('>') = chars.peek() {
+                    chars.next();
+                    tokens.push(Token::Convert)
+                } else {
+                    tokens.push(Token::Minus)
+                }
             }
             '*' => {
                 set_numbers(&mut numbers_buffer, &mut tokens);

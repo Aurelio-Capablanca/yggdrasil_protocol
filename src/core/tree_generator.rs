@@ -56,6 +56,7 @@ fn parse_boolean(token: &mut Vec<Token>) -> Expression {
             Token::GreaterEqual,
             Token::Less,
             Token::LessEqual,
+            Token::Convert
         ],
         |op, left, right| match op {
             Token::And => Expression::Binary {
@@ -94,6 +95,11 @@ fn parse_boolean(token: &mut Vec<Token>) -> Expression {
                 right: Box::new(right),
             },
             Token::LessEqual => Expression::Binary {
+                op,
+                left: Box::new(left),
+                right: Box::new(right),
+            },
+            Token::Convert => Expression::Binary {
                 op,
                 left: Box::new(left),
                 right: Box::new(right),

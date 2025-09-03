@@ -26,4 +26,13 @@ pub enum Token {
     // Punctuation
     LParenthesis,
     RParenthesis,
+
+    //conversions from decimals to binaries and vice versa
+    Convert,
+
+    //binary operations
+    PlusB,
+    MinusB,
+    DivideB,
+    MultiplyB
 }

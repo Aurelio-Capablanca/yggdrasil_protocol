@@ -24,7 +24,7 @@ impl Expression{
 
     pub fn as_numbers(&self) -> f64{
         match self {
-            Expression::Number(n ) => {println!("You hit here! NUMBERS as_numbers "); *n },
+            Expression::Number(n ) => {println!("You hit here! NUMBERS as_numbers {}",*n); *n },
             Expression::Boolean(b) => {println!("You hit here! BOOLEAN as_numbers "); if *b { 1.0 } else { 0.0 } },
             _=> 0.0
         }

@@ -21,40 +21,44 @@ pub fn mathematics(expression: &Expression) -> Response {
             Token::Plus => {
                 let left_val = mathematics(&left.to_numeric());
                 let right_val = mathematics(&right.to_numeric());
-                println!("Addition: {} + {} = {}",
-                         left_val.get_numeric(),
-                         right_val.get_numeric(),
-                         left_val.get_numeric() + right_val.get_numeric()
+                println!(
+                    "Addition: {} + {} = {}",
+                    left_val.get_numeric(),
+                    right_val.get_numeric(),
+                    left_val.get_numeric() + right_val.get_numeric()
                 );
                 Response::new().define_numeric(left_val.get_numeric() + right_val.get_numeric())
             }
             Token::Minus => {
                 let left_val = mathematics(&left.to_numeric());
                 let right_val = mathematics(&right.to_numeric());
-                println!("Addition: {} - {} = {}",
-                         left_val.get_numeric(),
-                         right_val.get_numeric(),
-                         left_val.get_numeric() - right_val.get_numeric()
+                println!(
+                    "Addition: {} - {} = {}",
+                    left_val.get_numeric(),
+                    right_val.get_numeric(),
+                    left_val.get_numeric() - right_val.get_numeric()
                 );
                 Response::new().define_numeric(left_val.get_numeric() - right_val.get_numeric())
             }
             Token::Multiply => {
                 let left_val = mathematics(&left.to_numeric());
                 let right_val = mathematics(&right.to_numeric());
-                println!("Addition: {} * {} = {}",
-                         left_val.get_numeric(),
-                         right_val.get_numeric(),
-                         left_val.get_numeric() * right_val.get_numeric()
+                println!(
+                    "Addition: {} * {} = {}",
+                    left_val.get_numeric(),
+                    right_val.get_numeric(),
+                    left_val.get_numeric() * right_val.get_numeric()
                 );
                 Response::new().define_numeric(left_val.get_numeric() * right_val.get_numeric())
             }
             Token::Divide => {
                 let left_val = mathematics(&left.to_numeric());
                 let right_val = mathematics(&right.to_numeric());
-                println!("Addition: {} / {} = {}",
-                         left_val.get_numeric(),
-                         right_val.get_numeric(),
-                         left_val.get_numeric() / right_val.get_numeric()
+                println!(
+                    "Addition: {} / {} = {}",
+                    left_val.get_numeric(),
+                    right_val.get_numeric(),
+                    left_val.get_numeric() / right_val.get_numeric()
                 );
                 Response::new().define_numeric(left_val.get_numeric() / right_val.get_numeric())
             }
@@ -62,12 +66,17 @@ pub fn mathematics(expression: &Expression) -> Response {
             Token::Equals => {
                 let left_val = mathematics(left);
                 let right_val = mathematics(right);
-                println!("Equality check: {} == {} = {}",
-                         left_val.get_boolean(),
-                         right_val.get_boolean(),
-                         left_val.get_boolean() == right_val.get_boolean()
+                println!(
+                    "Equality check: {} == {} = {}",
+                    left_val.get_boolean(),
+                    right_val.get_boolean(),
+                    left_val.get_boolean() == right_val.get_boolean()
                 );
                 Response::new().define_boolean(left_val.get_boolean() == right_val.get_boolean())
+            }
+            Token::Convert => {
+                convert_bases(&left.as_numbers(), &right.as_numbers());
+                Response::new()
             }
             _ => Response::new(),
         },
@@ -75,5 +84,31 @@ pub fn mathematics(expression: &Expression) -> Response {
             println!("Invalid Operation");
             Response::new()
         }
+    }
+}
+
+pub fn convert_bases(goal_numeric: &f64, base_destiny: &f64) {
+    let base = *base_destiny as i64;
+    let mut integer_part: Vec<f64> = Vec::new();
+    let mut decimal_part: Vec<f64> = Vec::new();
+    let limit_decimals = 5;
+    let binding = goal_numeric.to_string();
+    let splitter: Vec<&str> = binding.split('.').collect();
+    let integer_member_str = splitter.first().unwrap_or(&"0").to_string();
+    let decimal_member_str = match splitter.get(1) {
+        Some(decimal) => decimal.to_string(),
+        None => "0".to_string(),
+    };
+    println!(
+        "Integer: {:?} Decimal {:?}",
+        integer_member_str, decimal_member_str
+    );
+    let integer_member = integer_member_str.parse::<i64>().unwrap_or(0);
+    let decimal_member = decimal_member_str.parse::<i64>().unwrap_or(0);
+    let mut result: i64 = integer_member;
+    while result != 0 {
+        let remainder = result % base;
+        result = result / base;
+        println!("Result = {:?}; reminder = {:?}", result, remainder);
     }
 }

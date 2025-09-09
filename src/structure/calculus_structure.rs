@@ -14,10 +14,10 @@ pub enum Expression {
         op: Token,
         expr: Box<Expression>,
     },
-    Assignment{
-        value : f64,
-        variable: String
-    }
+    // Assignment{
+    //     value : f64,
+    //     variable: String
+    // }
 }
 
 impl Expression{

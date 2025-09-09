@@ -37,7 +37,7 @@ fn main() {
     // let operator_three = tree_generator::parse_expression(&mut operation_three);
     // println!("{:?}",operator_three);
 
-    let mut boolean_ex2 = tokenization::tokenization("34 -> 2");
+    let mut boolean_ex2 = tokenization::tokenization("3443549.343 -> 4");
     let expression_two2 = tree_generator::parse_expression(&mut boolean_ex2);
     println!("\n{:?}",expression_two2);
     let result_three = logical_evaluations::mathematics(&expression_two2);

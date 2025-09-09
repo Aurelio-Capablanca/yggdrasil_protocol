@@ -22,11 +22,11 @@ impl Response {
         self
     }
 
-    pub fn get_numeric(self) -> f64 {
-        self.numeric
+    pub fn get_numeric(&self) -> &f64 {
+        &self.numeric
     }
 
-    pub fn get_boolean(self) -> bool {
-        self.boolean
+    pub fn get_boolean(&self) -> &bool {
+        &self.boolean
     }
 }

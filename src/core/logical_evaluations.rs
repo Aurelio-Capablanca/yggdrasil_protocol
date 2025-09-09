@@ -1,40 +1,74 @@
 use crate::structure::calculus_structure::Expression;
-use crate::structure::token::Token;
 use crate::structure::response::Response;
+use crate::structure::token::Token;
 
 pub fn mathematics(expression: &Expression) -> Response {
     match expression {
         Expression::Number(n) => Response::new().define_numeric(*n),
-        Expression::Boolean(b ) => Response::new().define_boolean(*b),
-        Expression::Unary {op, expr} => match op {
+        Expression::Boolean(b) => Response::new().define_boolean(*b),
+        Expression::Unary { op, expr } => match op {
             Token::Not => {
-                println!("NOT({:?})",expr.to_boolean());
-                Response::new().define_boolean(!mathematics(&expr.to_boolean()).get_boolean())
-            },
-            _=> { println!("Getting out of Unary!!!"); Response::new() }
+                let action = mathematics(&expression.to_boolean());
+                println!(" NOT : !{}", action.get_boolean());
+                Response::new().define_boolean(!action.get_boolean())
+            }
+            _ => {
+                println!("Unknown Unary Operator");
+                Response::new()
+            }
         },
         Expression::Binary { op, left, right } => match op {
             Token::Plus => {
-                println!("{:?} + {:?}", mathematics(&left.to_numeric()).get_numeric(), mathematics(&right.to_numeric()).get_numeric());
-                Response::new().define_numeric(mathematics(&left.to_numeric()).get_numeric() + mathematics(&right.to_numeric()).get_numeric())
-            },
+                let left_val = mathematics(&left.to_numeric());
+                let right_val = mathematics(&right.to_numeric());
+                println!("Addition: {} + {} = {}",
+                         left_val.get_numeric(),
+                         right_val.get_numeric(),
+                         left_val.get_numeric() + right_val.get_numeric()
+                );
+                Response::new().define_numeric(left_val.get_numeric() + right_val.get_numeric())
+            }
             Token::Minus => {
-                println!("{:?} - {:?}",mathematics(left).get_numeric(),mathematics(right).get_numeric());
-                Response::new().define_numeric(mathematics(left).get_numeric() - mathematics(right).get_numeric())
-            },
+                let left_val = mathematics(&left.to_numeric());
+                let right_val = mathematics(&right.to_numeric());
+                println!("Addition: {} - {} = {}",
+                         left_val.get_numeric(),
+                         right_val.get_numeric(),
+                         left_val.get_numeric() - right_val.get_numeric()
+                );
+                Response::new().define_numeric(left_val.get_numeric() - right_val.get_numeric())
+            }
             Token::Multiply => {
-                println!("{:?} * {:?}",mathematics(left).get_numeric(),mathematics(right).get_numeric());
-                Response::new().define_numeric(mathematics(left).get_numeric() * mathematics(right).get_numeric())
-            },
+                let left_val = mathematics(&left.to_numeric());
+                let right_val = mathematics(&right.to_numeric());
+                println!("Addition: {} * {} = {}",
+                         left_val.get_numeric(),
+                         right_val.get_numeric(),
+                         left_val.get_numeric() * right_val.get_numeric()
+                );
+                Response::new().define_numeric(left_val.get_numeric() * right_val.get_numeric())
+            }
             Token::Divide => {
-                println!("{:?} / {:?}",mathematics(left).get_numeric(),mathematics(right).get_numeric());
-                Response::new().define_numeric(mathematics(left).get_numeric() / mathematics(right).get_numeric())
-            },
+                let left_val = mathematics(&left.to_numeric());
+                let right_val = mathematics(&right.to_numeric());
+                println!("Addition: {} / {} = {}",
+                         left_val.get_numeric(),
+                         right_val.get_numeric(),
+                         left_val.get_numeric() / right_val.get_numeric()
+                );
+                Response::new().define_numeric(left_val.get_numeric() / right_val.get_numeric())
+            }
             //booleans too!
             Token::Equals => {
-                println!("{:?} == {:?}",mathematics(left).get_numeric(),mathematics(right).get_numeric());
-                Response::new().define_boolean(mathematics(left).get_boolean() == mathematics(right).get_boolean())
-            },
+                let left_val = mathematics(left);
+                let right_val = mathematics(right);
+                println!("Equality check: {} == {} = {}",
+                         left_val.get_boolean(),
+                         right_val.get_boolean(),
+                         left_val.get_boolean() == right_val.get_boolean()
+                );
+                Response::new().define_boolean(left_val.get_boolean() == right_val.get_boolean())
+            }
             _ => Response::new(),
         },
         _ => {

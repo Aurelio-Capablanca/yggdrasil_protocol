@@ -4,7 +4,8 @@ use crate::structure::token::Token;
 pub enum Expression {
     Number(f64),
     Boolean(bool),
-    //Variable(String),
+    Base(i64),
+    Variable(String),
     Binary {
         op: Token,
         left: Box<Expression>,
@@ -14,10 +15,6 @@ pub enum Expression {
         op: Token,
         expr: Box<Expression>,
     },
-    // Assignment{
-    //     value : f64,
-    //     variable: String
-    // }
 }
 
 impl Expression{

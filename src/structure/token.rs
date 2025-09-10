@@ -22,6 +22,7 @@ pub enum Token {
     //Values
     Number(f64),
     Boolean(bool),
+    Base(i64),
 
     // Punctuation
     LParenthesis,

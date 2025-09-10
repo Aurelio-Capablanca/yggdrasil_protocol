@@ -73,7 +73,7 @@ pub fn tokenization(mathematical_sentence: &str) -> Vec<Token> {
                 if let Some('=') = chars.peek() {
                     chars.next();
                     tokens.push(Token::GreaterEqual);
-                } else { 
+                } else {
                     tokens.push(Token::Greater);
                 }
             }

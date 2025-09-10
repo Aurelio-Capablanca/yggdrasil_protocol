@@ -43,4 +43,7 @@ fn main() {
     let result_three = logical_evaluations::mathematics(&expression_two2);
     println!("\n{:?}",result_three);
     println!(" **** \n");
+    let mut boolean_test = tokenization::tokenization("3443549.343 <- 10 -> 4");
+    let expression_test = tree_generator::parse_expression(&mut boolean_test);
+    println!("\n{:?}",expression_test);
 }

@@ -81,6 +81,7 @@ pub fn mathematics(expression: &Expression) -> Response {
             }
             _ => Response::new(),
         },
+        _=> Response::new()
     }
 }
 
@@ -132,6 +133,7 @@ pub fn convert_bases(goal_numeric: &f64, base_destiny: &f64) {
         result = result / base;
         println!("Result = {:?}; reminder = {:?}", result, remainder);
     }
+    integer_part.reverse();
     integer_part.iter().for_each(|x| println!("{}", x));
     println!("\n");
     for _ in 0..limit_decimals {
@@ -145,4 +147,9 @@ pub fn convert_bases(goal_numeric: &f64, base_destiny: &f64) {
         println!("Result = {:?}; reminder = {:?}", result, fraction);
     }
     decimal_part.iter().for_each(|x| println!("{}",x));
+    let final_integer = integer_part.iter().map(|x| x.to_string()).collect::<String>();
+    let final_decimal = decimal_part.iter().map(|x| x.to_string()).collect::<String>();
+    let format_number = format!("{}.{}",final_integer,final_decimal);
+    println!("Result : {}",format_number);
 }
+

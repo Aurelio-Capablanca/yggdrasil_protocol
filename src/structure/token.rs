@@ -23,6 +23,7 @@ pub enum Token {
     Number(f64),
     Boolean(bool),
     Base(i64),
+    Strings(String),
 
     // Punctuation
     LParenthesis,

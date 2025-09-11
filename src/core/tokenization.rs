@@ -1,10 +1,15 @@
 use crate::structure::token::Token;
 
 fn set_numbers(numbers_buffer: &mut String, tokens: &mut Vec<Token>) {
-    if !numbers_buffer.is_empty() {
-        tokens.push(Token::Number(numbers_buffer.parse().unwrap()));
-        numbers_buffer.clear();
+    if numbers_buffer.is_empty() {
+        return;
     }
+    if numbers_buffer.chars().all(|x| x.is_ascii_digit() || x.eq_ignore_ascii_case(&'.'))  {
+        tokens.push(Token::Number(numbers_buffer.parse().unwrap()));
+    } else {
+        tokens.push(Token::Strings(numbers_buffer.to_string()))
+    }
+    numbers_buffer.clear();
 }
 
 pub fn tokenization(mathematical_sentence: &str) -> Vec<Token> {
@@ -15,8 +20,22 @@ pub fn tokenization(mathematical_sentence: &str) -> Vec<Token> {
     while let Some(cases) = chars.next() {
         match cases {
             '0'..='9' | '.' => numbers_buffer.push(cases),
+            'a' ..='z' => numbers_buffer.push(cases),
             'T' => tokens.push(Token::Boolean(true)),
             'F' => tokens.push(Token::Boolean(false)),
+            '\'' => {
+                chars.next();
+                set_numbers(&mut numbers_buffer, &mut tokens);
+                let mut base_str = String::new();
+                while let Some(&nexts) = chars.peek(){
+                    if nexts.is_ascii_digit() {
+                        base_str.push(nexts);
+                        chars.next();
+                    } else {break;}
+                }
+                let base_num = base_str.parse::<i64>().unwrap();
+                tokens.push(Token::Base(base_num));
+            },
             '+' => {
                 set_numbers(&mut numbers_buffer, &mut tokens);
                 tokens.push(Token::Plus);
@@ -81,15 +100,12 @@ pub fn tokenization(mathematical_sentence: &str) -> Vec<Token> {
                 if let Some('=') = chars.peek() {
                     chars.next();
                     tokens.push(Token::LessEqual);
-                } else {
+                }  else {
                     tokens.push(Token::Less);
                 }
             }
             ' ' => {
-                if !numbers_buffer.is_empty() {
-                    tokens.push(Token::Number(numbers_buffer.parse().unwrap()));
-                    numbers_buffer.clear();
-                }
+                set_numbers(&mut numbers_buffer, &mut tokens)
             }
             _ => {
                 print!("Do nothing! at? {:?}", cases)

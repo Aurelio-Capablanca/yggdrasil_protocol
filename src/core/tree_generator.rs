@@ -1,4 +1,4 @@
-use crate::structure::calculus_structure::Expression;
+use crate::structure::expression::Expression;
 use crate::structure::token::Token;
 
 fn parse_binary<F>(
@@ -31,7 +31,10 @@ fn parse_unary(tokens: &mut Vec<Token>) -> Expression {
             Token::Not => {
                 tokens.remove(0);
                 let expression = parse_unary(tokens);
-                Expression::Unary {op:Token::Not, expr: Box::new(expression)}
+                Expression::Unary {
+                    op: Token::Not,
+                    expr: Box::new(expression),
+                }
             }
             _ => parse_primary(tokens),
         }
@@ -56,7 +59,7 @@ fn parse_boolean(token: &mut Vec<Token>) -> Expression {
             Token::GreaterEqual,
             Token::Less,
             Token::LessEqual,
-            Token::Convert
+            Token::Convert,
         ],
         |op, left, right| match op {
             Token::And => Expression::Binary {
@@ -153,8 +156,37 @@ fn parse_mul_div(tokens: &mut Vec<Token>) -> Expression {
 
 fn parse_primary(tokens: &mut Vec<Token>) -> Expression {
     match tokens.remove(0) {
-        Token::Number(n) => Expression::Number(n),
+        Token::Number(n) => {
+            if tokens
+                .get(0)
+                .map(|x| matches!(x, Token::Base(_)))
+                .unwrap_or(false)
+            {
+                if let Token::Base(b) = tokens.remove(0) {
+                    Expression::Number(n, b)
+                } else {
+                    Expression::Number(n, 10)
+                }
+            } else {
+                Expression::Number(n, 10)
+            }
+        }
         Token::Boolean(b) => Expression::Boolean(b),
+        Token::Strings(s) => {
+            if tokens
+                .get(0)
+                .map(|x| matches!(x, Token::Base(_)))
+                .unwrap_or(false)
+            {
+                if let Token::Base(b) = tokens.remove(0) {
+                    Expression::Hex(s, b)
+                } else {
+                    Expression::Hex(s, 16)
+                }
+            } else {
+                Expression::Hex(s, 16)
+            }
+        }
         Token::LParenthesis => {
             let node = parse_expression(tokens);
             match tokens.remove(0) {

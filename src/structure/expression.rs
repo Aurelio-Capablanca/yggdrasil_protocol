@@ -27,9 +27,10 @@ impl Expression{
         }
     }
 
-    pub fn get_number_base(&self) -> &i64 {
+    pub fn get_number_or_hex_base(&self) -> &i64 {
         match self {
             Expression::Number(n,b) => b,
+            Expression::Hex(s, b) => b,
             _=> &10_i64
         }
     }

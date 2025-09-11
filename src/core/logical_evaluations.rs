@@ -79,7 +79,7 @@ pub fn mathematics(expression: &Expression) -> Response {
             Token::Convert => {
                 println!("Reach ?");
                 println!("Target : {}",&left.as_numbers());
-                println!("Target Base : {}",&left.get_number_base());
+                println!("Target Base : {}",&left.get_number_or_hex_base());
                 println!("Destiny Base : {}",&right.as_numbers());
                 //convert_bases(&left.as_numbers(), &right.as_numbers());
                 Response::new()

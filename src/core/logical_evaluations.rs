@@ -89,7 +89,7 @@ pub fn mathematics(expression: &Expression) -> Response {
                 let base = left.get_number_or_hex_base();
                 if base <= &10_i64 {
                     convert_bases(&left.as_numbers(), &base, &right.as_numbers());
-                } else {                    
+                } else {
                     convert_hex_bases(&left.get_hex().to_string(), &base, &right.as_numbers());
                 }
                 Response::new()
@@ -206,19 +206,35 @@ pub fn convert_bases(goal_numeric: &f64, base_origin: &i64, base_destiny: &f64) 
     format_number.parse::<f64>().unwrap_or(0.0)
 }
 
-lazy_static! {
-    static ref HEX_TO_BINARY: HashMap<String, i64> = hashmap!(
-        "0".to_string() => 0000
-    );
+// lazy_static! {
+//     static ref HEX_TO_BINARY: HashMap<String, i64> = hashmap!(
+//         "0".to_string() => 0000
+//     );
+// }
+
+fn hex_to_decimal_formula(mut result: i64, target: String) -> Option<String> {
+    for chars in target.chars() {
+        let numerical = i64::from(chars.to_digit(16).unwrap_or(0));
+        result = result * 16 + numerical;
+        println!("Result : {}", result);
+    }
+    Some(result.to_string())
 }
 
 fn convert_hex_bases(goal_hex: &String, base_origin: &i64, base_destiny: &f64) -> Option<i64> {
+    println!("{}", goal_hex);
     let mut result = 0i64;
-    if *base_destiny != 10_f64 {}
-    for chars in goal_hex.chars() {
-        let numerical = chars.to_digit(16)? as i64;
-        result = result * 16 + numerical;
+    if *base_destiny != 10_f64 {
+        //println!("You're trapped here! ")
     }
-    println!("HEX to Decimal ends in: {}", result);
+    let splitter: Vec<&str> = goal_hex.split('.').collect();
+    let interger_part: String = splitter.first().unwrap_or(&"0").to_string();
+    let decimal_part: String = match splitter.get(1) {
+        Some(dec) => dec.to_string(),
+        None => "0".to_string(),
+    };
+    let integer_member = hex_to_decimal_formula(result, interger_part).unwrap_or("0".to_string());
+    let decimal_member = hex_to_decimal_formula(result, decimal_part).unwrap_or("0".to_string());
+    println!("HEX to Decimal ends in: {}.{}", integer_member, decimal_member);
     Some(0_i64)
 }

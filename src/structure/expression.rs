@@ -1,3 +1,5 @@
+use std::iter::Empty;
+
 use crate::structure::token::Token;
 
 #[derive(Debug, Clone)]
@@ -47,7 +49,7 @@ impl Expression {
         }
     }
 
-    pub fn as_boolean(&self) -> bool {
+    pub fn _as_boolean(&self) -> bool {
         match self {
             Expression::Number(n, _) => *n != 0.0,
             Expression::Boolean(b) => *b,
@@ -59,6 +61,13 @@ impl Expression {
         match self {
             Expression::Number(n, _) => Expression::Boolean(*n != 0.0),
             _ => self.clone(),
+        }
+    }
+
+    pub fn get_hex(&self) -> &str {        
+        match self {
+            Expression::Hex(s, _) => s.as_str(),
+            _ => "",
         }
     }
 }

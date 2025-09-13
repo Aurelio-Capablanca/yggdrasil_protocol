@@ -45,10 +45,11 @@ fn main() {
     //
 
     println!(" **** \n");
-    let mut boolean_test = tokenization::tokenization("57 ' 8 -> 10");
+    let mut boolean_test = tokenization::tokenization("2f ' 16 -> 10");
     let expression_test = tree_generator::parse_expression(&mut boolean_test);
     println!("\n{:?}",expression_test);
     let result_test = logical_evaluations::mathematics(&expression_test);
+    print!("{:?}",result_test)
 
     // println!(" **** \n");
     // let mut test_two = tokenization::tokenization("3afd59.3h3 ' 16 -> 4");
@@ -59,5 +60,6 @@ fn main() {
     // let mut test_three = tokenization::tokenization("T == T");
     // let expression_three = tree_generator::parse_expression(&mut test_three);
     // println!("Expression : \n{:?}",expression_three);
+
 
 }

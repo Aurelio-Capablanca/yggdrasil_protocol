@@ -1,6 +1,16 @@
 use crate::structure::expression::Expression;
 use crate::structure::response::Response;
 use crate::structure::token::Token;
+use lazy_static::lazy_static;
+use std::collections::HashMap;
+
+macro_rules ! hashmap {
+( $ ( $ key: expr => $ val : expr), * ) => {{
+let mut map =::std::collections::HashMap::new();
+$ (map.insert( $ key, $ val); ) *
+map
+}};
+}
 
 pub fn mathematics(expression: &Expression) -> Response {
     match expression {
@@ -79,7 +89,8 @@ pub fn mathematics(expression: &Expression) -> Response {
                 let base = left.get_number_or_hex_base();
                 if base <= &10_i64 {
                     convert_bases(&left.as_numbers(), &base, &right.as_numbers());
-                } else {
+                } else {                    
+                    convert_hex_bases(&left.get_hex().to_string(), &base, &right.as_numbers());
                 }
                 Response::new()
             }
@@ -149,7 +160,7 @@ pub fn convert_bases(goal_numeric: &f64, base_origin: &i64, base_destiny: &f64) 
     let splitter: Vec<&str> = binding.split('.').collect();
     let integer_member_str = splitter.first().unwrap_or(&"0").to_string();
     let decimal_member_str = match splitter.get(1) {
-        Some(decimal) => format!("0.{}", decimal.to_string()),
+        Some(decimal) => decimal.to_string(),
         None => "0".to_string(),
     };
 
@@ -159,7 +170,8 @@ pub fn convert_bases(goal_numeric: &f64, base_origin: &i64, base_destiny: &f64) 
     );
 
     let integer_member = parse_int_to_base(&integer_member_str, *base_origin).unwrap_or(0); //integer_member_str.parse::<i64>().unwrap_or(0);
-    let mut decimal_member = parse_faction_to_base(&decimal_member_str, *base_origin).unwrap_or(0.0);//decimal_member_str.parse::<f64>().unwrap_or(0.0);
+    let mut decimal_member =
+        parse_faction_to_base(&decimal_member_str, *base_origin).unwrap_or(0.0); //decimal_member_str.parse::<f64>().unwrap_or(0.0);    
     //do Integer Part
     let mut result: i64 = integer_member;
     while result != 0 {
@@ -194,4 +206,19 @@ pub fn convert_bases(goal_numeric: &f64, base_origin: &i64, base_destiny: &f64) 
     format_number.parse::<f64>().unwrap_or(0.0)
 }
 
-fn convert_hex_bases(goal_hex: &String, base_origin: &i64, base_destiny: &f64) {}
+lazy_static! {
+    static ref HEX_TO_BINARY: HashMap<String, i64> = hashmap!(
+        "0".to_string() => 0000
+    );
+}
+
+fn convert_hex_bases(goal_hex: &String, base_origin: &i64, base_destiny: &f64) -> Option<i64> {
+    let mut result = 0i64;
+    if *base_destiny != 10_f64 {}
+    for chars in goal_hex.chars() {
+        let numerical = chars.to_digit(16)? as i64;
+        result = result * 16 + numerical;
+    }
+    println!("HEX to Decimal ends in: {}", result);
+    Some(0_i64)
+}

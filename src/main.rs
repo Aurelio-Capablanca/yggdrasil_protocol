@@ -45,19 +45,19 @@ fn main() {
     //
 
     println!(" **** \n");
-    let mut boolean_test = tokenization::tokenization("3443549.343 ' 10 -> 4");
+    let mut boolean_test = tokenization::tokenization("47 ' 10 -> 8");
     let expression_test = tree_generator::parse_expression(&mut boolean_test);
     println!("\n{:?}",expression_test);
     let result_test = logical_evaluations::mathematics(&expression_test);
 
-    println!(" **** \n");
-    let mut test_two = tokenization::tokenization("3afd59.3h3 ' 16 -> 4");
-    let expression_two = tree_generator::parse_expression(&mut test_two);
-    println!("Expression : \n{:?}",expression_two);
+    // println!(" **** \n");
+    // let mut test_two = tokenization::tokenization("3afd59.3h3 ' 16 -> 4");
+    // let expression_two = tree_generator::parse_expression(&mut test_two);
+    // println!("Expression : \n{:?}",expression_two);
 
-    println!(" **** \n");
-    let mut test_three = tokenization::tokenization("T == T");
-    let expression_three = tree_generator::parse_expression(&mut test_three);
-    println!("Expression : \n{:?}",expression_three);
+    // println!(" **** \n");
+    // let mut test_three = tokenization::tokenization("T == T");
+    // let expression_three = tree_generator::parse_expression(&mut test_three);
+    // println!("Expression : \n{:?}",expression_three);
 
 }

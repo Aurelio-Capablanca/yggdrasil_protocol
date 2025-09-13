@@ -32,9 +32,9 @@ pub enum Token {
     //conversions from decimals to binaries and vice versa
     Convert,
 
-    //binary operations
-    PlusB,
-    MinusB,
-    DivideB,
-    MultiplyB
+    //binary operations -- reactivate later
+    // PlusB,
+    // MinusB,
+    // DivideB,
+    // MultiplyB
 }

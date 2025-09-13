@@ -1,0 +1,4 @@
+1) BAC.1E16 conviertalo a Base 8
+2) 7531.4248 conviertalo a Base 16
+3) 111010110111011.110100112  conviertalo a base 8 y base 16
+4) 98,565.2310 conviertalo a base 2, Base 8, Base 16

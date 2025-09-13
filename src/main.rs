@@ -45,7 +45,7 @@ fn main() {
     //
 
     println!(" **** \n");
-    let mut boolean_test = tokenization::tokenization("47 ' 10 -> 8");
+    let mut boolean_test = tokenization::tokenization("57 ' 8 -> 10");
     let expression_test = tree_generator::parse_expression(&mut boolean_test);
     println!("\n{:?}",expression_test);
     let result_test = logical_evaluations::mathematics(&expression_test);

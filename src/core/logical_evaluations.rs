@@ -109,6 +109,32 @@ pub fn validate_number_for_base(goal_validate: &str, base_origin: &i64) -> bool 
     true
 }
 
+fn parse_int_to_base(num_str: &str, base: i64) -> Option<i64> {
+    let mut value: i64 = 0;
+    for chars in num_str.chars() {
+        let digit = chars.to_digit(10)? as i64;
+        if digit >= base {
+            return None;
+        }
+        value = value * base + digit;
+    }
+    Some(value)
+}
+
+fn parse_faction_to_base(frac_str: &str, base: i64) -> Option<f64> {
+    let mut value: f64 = 0.0;
+    let mut base_factions: f64 = base as f64;
+    for chars in frac_str.chars() {
+        let digit = chars.to_digit(10)? as i64;
+        if digit >= base {
+            return None;
+        }
+        value += (digit as f64) / base_factions;
+        base_factions *= base as f64;
+    }
+    Some(value)
+}
+
 pub fn convert_bases(goal_numeric: &f64, base_origin: &i64, base_destiny: &f64) -> f64 {
     let base = *base_destiny as i64;
     let eval = validate_number_for_base(&goal_numeric.to_string(), &base_origin);
@@ -126,12 +152,14 @@ pub fn convert_bases(goal_numeric: &f64, base_origin: &i64, base_destiny: &f64) 
         Some(decimal) => format!("0.{}", decimal.to_string()),
         None => "0".to_string(),
     };
+
     println!(
         "Integer: {:?} Decimal {:?}",
         integer_member_str, decimal_member_str
     );
-    let integer_member = integer_member_str.parse::<i64>().unwrap_or(0);
-    let mut decimal_member = decimal_member_str.parse::<f64>().unwrap_or(0.0);
+
+    let integer_member = parse_int_to_base(&integer_member_str, *base_origin).unwrap_or(0); //integer_member_str.parse::<i64>().unwrap_or(0);
+    let mut decimal_member = parse_faction_to_base(&decimal_member_str, *base_origin).unwrap_or(0.0);//decimal_member_str.parse::<f64>().unwrap_or(0.0);
     //do Integer Part
     let mut result: i64 = integer_member;
     while result != 0 {

@@ -148,6 +148,11 @@ fn parse_faction_to_base(frac_str: &str, base: i64) -> Option<f64> {
 
 pub fn convert_bases(goal_numeric: &f64, base_origin: &i64, base_destiny: &f64) -> f64 {
     let base = *base_destiny as i64;
+    if base_origin == &10_i64 && base_destiny == &16_f64 {
+        println!("Go from Decimal To Hex");
+        decimal_to_hex(goal_numeric, base_origin, base_destiny);
+        return 0.0;
+    }
     let eval = validate_number_for_base(&goal_numeric.to_string(), &base_origin);
     if eval == false {
         println!("Mismatched!!!");
@@ -206,11 +211,25 @@ pub fn convert_bases(goal_numeric: &f64, base_origin: &i64, base_destiny: &f64) 
     format_number.parse::<f64>().unwrap_or(0.0)
 }
 
-// lazy_static! {
-//     static ref HEX_TO_BINARY: HashMap<String, i64> = hashmap!(
-//         "0".to_string() => 0000
-//     );
-// }
+lazy_static! {
+    static ref HEX_TO_BINARY: HashMap<String, i64> = hashmap!(
+        "0".to_string() => 0000
+    );
+    static ref HEX_TO_DECIMAL: HashMap<String, i64> = hashmap!(
+        "0".to_string() => 0_i64,
+        "1".to_string() => 1_i64,
+        "2".to_string() => 2_i64,
+        "3".to_string() => 3_i64,
+        "4".to_string() => 4_i64,
+        "5".to_string() => 5_i64,
+        "6".to_string() => 6_i64,
+        "7".to_string() => 7_i64,
+        "8".to_string() => 8_i64,
+        "9".to_string() => 9_i64,
+        "A".to_string() => 10_i64,
+        "B".to_string() => 11_i64
+    );
+}
 
 fn hex_to_decimal_formula(mut result: i64, target: String) -> Option<String> {
     for chars in target.chars() {
@@ -221,12 +240,26 @@ fn hex_to_decimal_formula(mut result: i64, target: String) -> Option<String> {
     Some(result.to_string())
 }
 
+fn decimal_to_hex(goal_decimal: &f64, base_origin: &i64, base_destiny: &f64) {
+    let mut value = *goal_decimal as i64;
+    let hex_digits = "0123456789ABCDEF".chars().collect::<Vec<char>>();
+    let mut result: Vec<char> = Vec::new();
+    while value > 0 {
+        let reminder = (value % 16) as usize;
+        result.push(hex_digits[reminder]);
+        value /= 16;
+    }
+    let test = result.into_iter().rev().collect::<Vec<char>>();
+    test.iter().for_each(|x| println!("{}",x));
+}
+
 fn convert_hex_bases(goal_hex: &String, base_origin: &i64, base_destiny: &f64) -> Option<i64> {
     println!("{}", goal_hex);
-    let mut result = 0i64;
+    let result = 0i64;
     if *base_destiny != 10_f64 {
         //println!("You're trapped here! ")
     }
+    println!("Go from Hex to Decimal");
     let splitter: Vec<&str> = goal_hex.split('.').collect();
     let interger_part: String = splitter.first().unwrap_or(&"0").to_string();
     let decimal_part: String = match splitter.get(1) {
@@ -235,6 +268,9 @@ fn convert_hex_bases(goal_hex: &String, base_origin: &i64, base_destiny: &f64) -
     };
     let integer_member = hex_to_decimal_formula(result, interger_part).unwrap_or("0".to_string());
     let decimal_member = hex_to_decimal_formula(result, decimal_part).unwrap_or("0".to_string());
-    println!("HEX to Decimal ends in: {}.{}", integer_member, decimal_member);
+    println!(
+        "HEX to Decimal ends in: {}.{}",
+        integer_member, decimal_member
+    );
     Some(0_i64)
 }

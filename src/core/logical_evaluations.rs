@@ -211,12 +211,9 @@ pub fn convert_bases(goal_numeric: &f64, base_origin: &i64, base_destiny: &f64) 
     format_number.parse::<f64>().unwrap_or(0.0)
 }
 
-lazy_static! {
+lazy_static! {    
     static ref HEX_TO_BINARY: HashMap<String, i64> = hashmap!(
-        "0".to_string() => 0000
-    );
-    static ref HEX_TO_DECIMAL: HashMap<String, i64> = hashmap!(
-        "0".to_string() => 0_i64,
+        "0".to_string() => 0000_i64,
         "1".to_string() => 1_i64,
         "2".to_string() => 2_i64,
         "3".to_string() => 3_i64,
@@ -241,13 +238,24 @@ fn hex_to_decimal_formula(mut result: i64, target: String) -> Option<String> {
 }
 
 fn decimal_to_hex(goal_decimal: &f64, base_origin: &i64, base_destiny: &f64) {
-    let mut value = *goal_decimal as i64;
+   // split here for Decimal point
     let hex_digits = "0123456789ABCDEF".chars().collect::<Vec<char>>();
     let mut result: Vec<char> = Vec::new();
-    while value > 0 {
-        let reminder = (value % 16) as usize;
+
+    let binding = goal_decimal.to_string();
+    let splitter: Vec<&str> = binding.split('.').collect();
+    let interger_part: String = splitter.first().unwrap_or(&"0").to_string();
+    let decimal_part: String = match splitter.get(1) {
+        Some(dec) => dec.to_string(),
+        None => "0".to_string(),
+    };
+    let mut integer_member = interger_part.parse::<i64>().unwrap_or(0);
+    let mut decimal_member= decimal_part.parse::<i64>().unwrap_or(0);
+
+    while integer_member > 0 {
+        let reminder = (integer_member % 16) as usize;
         result.push(hex_digits[reminder]);
-        value /= 16;
+        integer_member /= 16;
     }
     let test = result.into_iter().rev().collect::<Vec<char>>();
     test.iter().for_each(|x| println!("{}",x));

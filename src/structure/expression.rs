@@ -1,5 +1,3 @@
-use std::iter::Empty;
-
 use crate::structure::token::Token;
 
 #[derive(Debug, Clone)]

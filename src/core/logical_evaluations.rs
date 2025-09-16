@@ -237,28 +237,32 @@ fn hex_to_decimal_formula(mut result: i64, target: String) -> Option<String> {
     Some(result.to_string())
 }
 
-fn decimal_to_hex(goal_decimal: &f64, base_origin: &i64, base_destiny: &f64) {
-   // split here for Decimal point
+fn decimal_to_hex(goal_decimal: &f64, base_origin: &i64, base_destiny: &f64) {   
     let hex_digits = "0123456789ABCDEF".chars().collect::<Vec<char>>();
-    let mut result: Vec<char> = Vec::new();
-
-    let binding = goal_decimal.to_string();
-    let splitter: Vec<&str> = binding.split('.').collect();
-    let interger_part: String = splitter.first().unwrap_or(&"0").to_string();
-    let decimal_part: String = match splitter.get(1) {
-        Some(dec) => dec.to_string(),
-        None => "0".to_string(),
-    };
-    let mut integer_member = interger_part.parse::<i64>().unwrap_or(0);
-    let mut decimal_member= decimal_part.parse::<i64>().unwrap_or(0);
-
+    let mut result_integer: Vec<char> = Vec::new();
+    let mut result_fractionary : Vec<char> = Vec::new();
+    let mut integer_member = goal_decimal.trunc() as i64;
+    let mut decimal_member= goal_decimal.fract() as f64;    
     while integer_member > 0 {
         let reminder = (integer_member % 16) as usize;
-        result.push(hex_digits[reminder]);
+        result_integer.push(hex_digits[reminder]);
         integer_member /= 16;
     }
-    let test = result.into_iter().rev().collect::<Vec<char>>();
-    test.iter().for_each(|x| println!("{}",x));
+    let precision = 3;
+    for _ in 0..precision {
+        decimal_member *= 16.0;        
+        let unit = decimal_member.trunc() as usize;        
+        result_fractionary.push(hex_digits[unit]);
+        decimal_member -= unit as f64;
+        if decimal_member == 0.0 {
+            break;
+        }
+    }
+    let test_int = result_integer.into_iter().rev().collect::<Vec<char>>();
+    test_int.iter().for_each(|x| println!("{}",x));
+    print!("\n");
+    let test_frac = result_fractionary.into_iter().collect::<Vec<char>>();
+    test_frac.iter().for_each(|x| println!("{}",x));
 }
 
 fn convert_hex_bases(goal_hex: &String, base_origin: &i64, base_destiny: &f64) -> Option<i64> {

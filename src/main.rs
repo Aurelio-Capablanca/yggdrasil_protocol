@@ -45,11 +45,21 @@ fn main() {
     //
 
     println!(" **** \n");
-    let mut boolean_test = tokenization::tokenization("47 ' 10 -> 16");
+    let mut boolean_test_s = tokenization::tokenization("3764.121 ' 8 -> 2");
+    let expression_test_s = tree_generator::parse_expression(&mut boolean_test_s);
+    println!("\n{:?}",expression_test_s);
+    let result_test_s = logical_evaluations::mathematics(&expression_test_s);
+    print!("{:?}",result_test_s);
+
+
+     println!(" **** \n");
+    let mut boolean_test = tokenization::tokenization("47.45 ' 10 -> 16");
     let expression_test = tree_generator::parse_expression(&mut boolean_test);
     println!("\n{:?}",expression_test);
     let result_test = logical_evaluations::mathematics(&expression_test);
-    print!("{:?}",result_test)
+    print!("{:?}",result_test);
+
+
 
     // println!(" **** \n");
     // let mut test_two = tokenization::tokenization("3afd59.3h3 ' 16 -> 4");

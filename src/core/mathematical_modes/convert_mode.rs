@@ -9,8 +9,26 @@ map
 }};
 }
 
+lazy_static! {    
+    static ref HEX_TO_BINARY: HashMap<String, i64> = hashmap!(
+        "0".to_string() => 0000_i64,
+        "1".to_string() => 1_i64,
+        "2".to_string() => 2_i64,
+        "3".to_string() => 3_i64,
+        "4".to_string() => 4_i64,
+        "5".to_string() => 5_i64,
+        "6".to_string() => 6_i64,
+        "7".to_string() => 7_i64,
+        "8".to_string() => 8_i64,
+        "9".to_string() => 9_i64,
+        "A".to_string() => 10_i64,
+        "B".to_string() => 11_i64
+    );
+}
+
+
 pub fn validate_number_for_base(goal_validate: &str, base_origin: &i64) -> bool {
-    for element in goal_validate.chars() {
+  for element in goal_validate.chars() {
         if element == '.' {
             continue;
         }
@@ -120,31 +138,9 @@ pub fn convert_bases(goal_numeric: &f64, base_origin: &i64, base_destiny: &f64) 
     format_number.parse::<f64>().unwrap_or(0.0)
 }
 
-lazy_static! {    
-    static ref HEX_TO_BINARY: HashMap<String, i64> = hashmap!(
-        "0".to_string() => 0000_i64,
-        "1".to_string() => 1_i64,
-        "2".to_string() => 2_i64,
-        "3".to_string() => 3_i64,
-        "4".to_string() => 4_i64,
-        "5".to_string() => 5_i64,
-        "6".to_string() => 6_i64,
-        "7".to_string() => 7_i64,
-        "8".to_string() => 8_i64,
-        "9".to_string() => 9_i64,
-        "A".to_string() => 10_i64,
-        "B".to_string() => 11_i64
-    );
-}
 
-fn hex_to_decimal_formula(mut result: i64, target: String) -> Option<String> {
-    for chars in target.chars() {
-        let numerical = i64::from(chars.to_digit(16).unwrap_or(0));
-        result = result * 16 + numerical;
-        println!("Result : {}", result);
-    }
-    Some(result.to_string())
-}
+
+
 
 fn decimal_to_hex(goal_decimal: &f64, base_origin: &i64, base_destiny: &f64) {   
     let hex_digits = "0123456789ABCDEF".chars().collect::<Vec<char>>();
@@ -172,6 +168,16 @@ fn decimal_to_hex(goal_decimal: &f64, base_origin: &i64, base_destiny: &f64) {
     print!("\n");
     let test_frac = result_fractionary.into_iter().collect::<Vec<char>>();
     test_frac.iter().for_each(|x| println!("{}",x));
+}
+
+
+fn hex_to_decimal_formula(mut result: i64, target: String) -> Option<String> {
+    for chars in target.chars() {
+        let numerical = i64::from(chars.to_digit(16).unwrap_or(0));
+        result = result * 16 + numerical;
+        println!("Result : {}", result);
+    }
+    Some(result.to_string())
 }
 
 pub fn convert_hex_bases(goal_hex: &String, base_origin: &i64, base_destiny: &f64) -> Option<i64> {

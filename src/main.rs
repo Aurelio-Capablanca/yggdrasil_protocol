@@ -1,7 +1,7 @@
 mod structure;
 mod core;
 
-use crate::core::{logical_evaluations,  tokenization, tree_generator};
+use crate::core::{general_operator,  tokenization, tree_generator};
 
 
 fn main() {
@@ -9,13 +9,10 @@ fn main() {
     // let mut token_one = tokenization::tokenization("( 2 * 2 - 8 ) + 15 && 9 + 9");
     // let operator = tree_generator::parse_expression(&mut token_one);
     // println!("{:?}",operator);
-    //
+
     // let mut token_two = tokenization::tokenization("( 2 * 2 - 8 ) + 15 > 9 + 9");
     // let operator_two = tree_generator::parse_expression(&mut token_two);
     // println!("{:?}",operator_two);
-    //
-    //
-
 
     //(729 *2)+(243 *2)+(81 *2)+(27*1)+(9*1)+(3*2)+(1*2)
     // let mut token_start = tokenization::tokenization("((84 / 2) + (15* 3) - (120/4)) * 2 - ((45 * 2) - (36 / 3))");
@@ -48,15 +45,15 @@ fn main() {
     let mut boolean_test_s = tokenization::tokenization("3764.121 ' 8 -> 2");
     let expression_test_s = tree_generator::parse_expression(&mut boolean_test_s);
     println!("\n{:?}",expression_test_s);
-    let result_test_s = logical_evaluations::mathematics(&expression_test_s);
+    let result_test_s = general_operator::do_maths(&expression_test_s);
     print!("{:?}",result_test_s);
 
 
      println!(" **** \n");
-    let mut boolean_test = tokenization::tokenization("47.45 ' 10 -> 16");
+    let mut boolean_test = tokenization::tokenization("101.101 ' 2 +  11.011 ' 2");
     let expression_test = tree_generator::parse_expression(&mut boolean_test);
     println!("\n{:?}",expression_test);
-    let result_test = logical_evaluations::mathematics(&expression_test);
+    let result_test = general_operator::do_maths(&expression_test);
     print!("{:?}",result_test);
 
 

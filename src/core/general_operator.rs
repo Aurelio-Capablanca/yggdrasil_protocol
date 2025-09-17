@@ -7,7 +7,7 @@ pub fn do_maths(expression: &Expression) -> Response {
     match expression {
         Expression::Number(n, _) => Response::new().define_numeric(*n),
         Expression::Boolean(b) => Response::new().define_boolean(*b),
-        Expression::Hex(_s, _b) => Response::new(),
+        Expression::Hex(s, _b) => Response::new().define_string(s.to_string()),
         Expression::Unary { op, expr } => match op {
             Token::Not => {
                 let action = do_maths(&expr.to_boolean());
@@ -33,8 +33,8 @@ pub fn do_maths(expression: &Expression) -> Response {
                     && *right.get_number_or_hex_base() == 2_i64
                 {
                     let result_sum = binary_arithmetics::sum_binaries(
-                        *left_val.get_numeric(),
-                        *right_val.get_numeric(),
+                        do_maths(&left).get_string(),
+                        do_maths(&right).get_string(),
                     );
                     println!("{}", result_sum);
                     return Response::new();
@@ -54,11 +54,11 @@ pub fn do_maths(expression: &Expression) -> Response {
                     && *right.get_number_or_hex_base() == 2_i64
                 {
                     let result_subtract = binary_arithmetics::subtract_binaries(
-                        *left_val.get_numeric(),
-                        *right_val.get_numeric(),
+                        do_maths(&left).get_string(),
+                        do_maths(&right).get_string(),
                     );
                     println!("{}", result_subtract);
-                    return Response::new();
+                    return Response::new().define_string(result_subtract);
                 }
                 Response::new().define_numeric(left_val.get_numeric() - right_val.get_numeric())
             }
@@ -74,9 +74,12 @@ pub fn do_maths(expression: &Expression) -> Response {
                 if *left.get_number_or_hex_base() == 2_i64
                     && *right.get_number_or_hex_base() == 2_i64
                 {
-                    let product_result = binary_arithmetics::muiltiply_binaries(*left_val.get_numeric(), *right_val.get_numeric());
-                    println!("{}",product_result);
-                    return Response::new();
+                    let product_result = binary_arithmetics::multiply_binaries(
+                        do_maths(&left).get_string().to_string(),
+                        do_maths(&right).get_string().to_string(),
+                    );
+                    println!("{}", product_result);
+                    return Response::new().define_string(product_result);
                 }
                 Response::new().define_numeric(left_val.get_numeric() * right_val.get_numeric())
             }
@@ -92,9 +95,13 @@ pub fn do_maths(expression: &Expression) -> Response {
                 if *left.get_number_or_hex_base() == 2_i64
                     && *right.get_number_or_hex_base() == 2_i64
                 {
-                    let (quotient, reminder) = binary_arithmetics::divide_binaries(*left_val.get_numeric(), *right_val.get_numeric());
-                    println!("{}, {}",quotient, reminder);
-                    return Response::new();
+                    let (quotient, reminder) = binary_arithmetics::divide_binaries(
+                        do_maths(&left).get_string(),
+                        do_maths(&right).get_string(),
+                        4,
+                    );
+                    println!("{}, {}", quotient, reminder);
+                    return Response::new().define_string(quotient);
                 }
                 Response::new().define_numeric(left_val.get_numeric() / right_val.get_numeric())
             }

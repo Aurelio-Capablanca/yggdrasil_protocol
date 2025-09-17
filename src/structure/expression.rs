@@ -5,7 +5,6 @@ pub enum Expression {
     Number(f64, i64),
     Boolean(bool),
     Hex(String, i64),
-    _Variable(String),
     Binary {
         op: Token,
         left: Box<Expression>,

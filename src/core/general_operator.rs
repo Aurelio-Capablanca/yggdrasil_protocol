@@ -4,12 +4,12 @@ use crate::structure::response::Response;
 use crate::structure::token::Token;
 use lazy_static::lazy_static;
 
-struct precision_holder {
+struct PrecisionHolder {
     precision: i32,
 }
 
 lazy_static! {
-    static ref PRECISION: precision_holder = precision_holder { precision: 3 };
+    static ref PRECISION: PrecisionHolder = PrecisionHolder { precision: 3 };
 }
 
 pub fn do_maths(expression: &Expression) -> Response {
@@ -143,6 +143,6 @@ pub fn do_maths(expression: &Expression) -> Response {
             }
             _ => Response::new(),
         },
-        _ => Response::new(),
+       // _ => Response::new(),
     }
 }

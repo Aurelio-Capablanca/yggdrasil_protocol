@@ -158,10 +158,12 @@ fn decimal_to_hex(goal_decimal: &f64, /*base_origin: &i64, base_destiny: &f64*/)
         decimal_member *= 16.0;        
         let unit = decimal_member.trunc() as usize;        
         result_fractionary.push(hex_digits[unit]);
+        println!("{:?}",result_fractionary);
         decimal_member -= unit as f64;
         if decimal_member == 0.0 {
             break;
         }
+        println!("{} * 16  = {}",decimal_member,decimal_member);
     }
     let test_int = result_integer.into_iter().rev().collect::<Vec<char>>();
     test_int.iter().for_each(|x| println!("{}",x));

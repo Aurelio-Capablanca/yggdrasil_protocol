@@ -68,6 +68,7 @@ pub fn sum_binaries(a: &str, b: &str) -> String {
         let bit_a = a_part.get(i).unwrap_or(&'0').to_digit(2).unwrap_or(0);
         let bit_b = b_part.get(i).unwrap_or(&'0').to_digit(2).unwrap_or(0);
         let b_sum = bit_a + bit_b + carry;
+        println!("{} + {} = {}",bit_a,bit_b,carry);
         result.push(std::char::from_digit(b_sum % 2, 2).unwrap_or('0'));
         carry = b_sum / 2;
     }
@@ -102,6 +103,7 @@ pub fn multiply_binaries(a: String, b: String) -> String {
         if bit_b == '1' {
             let mut partial = complete_a.to_string();
             partial.push_str(&"0".repeat(shift));
+            println!("{}",partial);
             let width = result.len().max(partial.len());
             let partial_padded = format!("{:0>width$}", partial, width = width);
             let result_padded = format!("{:0>width$}", result, width = width);
@@ -114,7 +116,6 @@ pub fn multiply_binaries(a: String, b: String) -> String {
     }
 
     if total_space_frac > 0 {
-        // Pad with leading zeros if needed
         if result.len() <= total_space_frac {
             result = format!("{:0>width$}", result, width = total_space_frac + 1);
         }
@@ -138,6 +139,7 @@ pub fn subtract_binaries(a: &str, b: &str) -> String {
         let bit_a = a_part.get(i).unwrap_or(&'0').to_digit(2).unwrap_or(0);
         let bit_b = b_part.get(i).unwrap_or(&'0').to_digit(2).unwrap_or(0);
         let mut diference = bit_a as i32 - bit_b as i32 - borrow as i32;
+        println!("{} - {} = {}",bit_a,bit_b,diference);
         if diference < 0_i32 {
             diference += 2;
             borrow = 1;
@@ -145,6 +147,7 @@ pub fn subtract_binaries(a: &str, b: &str) -> String {
             borrow = 0;
         }
         result.push(char::from_digit(diference as u32, 2).unwrap_or('0'));
+        println!("{} - {} = {:?}",bit_a,bit_b,result)
     }
     result.into_iter().rev().collect()
 }

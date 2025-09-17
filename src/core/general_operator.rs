@@ -5,11 +5,11 @@ use crate::structure::token::Token;
 use lazy_static::lazy_static;
 
 struct precision_holder {
-    precision : i32
+    precision: i32,
 }
 
 lazy_static! {
-    static ref PRECISION : precision_holder =  precision_holder { precision: 3 };
+    static ref PRECISION: precision_holder = precision_holder { precision: 3 };
 }
 
 pub fn do_maths(expression: &Expression) -> Response {
@@ -46,11 +46,12 @@ pub fn do_maths(expression: &Expression) -> Response {
                         do_maths(&right).get_string(),
                     );
                     println!("{}", result_sum);
-                    return Response::new();
+                    return Response::new().define_string(result_sum);
                 }
                 Response::new().define_numeric(left_val.get_numeric() + right_val.get_numeric())
             }
             Token::Minus => {
+                println!("{:?} :  {:?}", left, right);
                 let left_val = do_maths(&left.to_numeric());
                 let right_val = do_maths(&right.to_numeric());
                 println!(

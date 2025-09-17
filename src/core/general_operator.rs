@@ -32,11 +32,11 @@ pub fn do_maths(expression: &Expression) -> Response {
                 if *left.get_number_or_hex_base() == 2_i64
                     && *right.get_number_or_hex_base() == 2_i64
                 {
-                    let result = binary_arithmetics::sum_binaries(
+                    let result_sum = binary_arithmetics::sum_binaries(
                         *left_val.get_numeric(),
                         *right_val.get_numeric(),
                     );
-                    println!("{}", result);
+                    println!("{}", result_sum);
                     return Response::new();
                 }
                 Response::new().define_numeric(left_val.get_numeric() + right_val.get_numeric())
@@ -50,9 +50,14 @@ pub fn do_maths(expression: &Expression) -> Response {
                     right_val.get_numeric(),
                     left_val.get_numeric() - right_val.get_numeric()
                 );
-                if *left.get_number_or_hex_base() == 2_i64 && *right.get_number_or_hex_base() == 2_i64 {
-                    let result = binary_arithmetics::subtract_binaries(*left_val.get_numeric(), *right_val.get_numeric());
-                    println!("{}",result);
+                if *left.get_number_or_hex_base() == 2_i64
+                    && *right.get_number_or_hex_base() == 2_i64
+                {
+                    let result_subtract = binary_arithmetics::subtract_binaries(
+                        *left_val.get_numeric(),
+                        *right_val.get_numeric(),
+                    );
+                    println!("{}", result_subtract);
                     return Response::new();
                 }
                 Response::new().define_numeric(left_val.get_numeric() - right_val.get_numeric())
@@ -66,6 +71,13 @@ pub fn do_maths(expression: &Expression) -> Response {
                     right_val.get_numeric(),
                     left_val.get_numeric() * right_val.get_numeric()
                 );
+                if *left.get_number_or_hex_base() == 2_i64
+                    && *right.get_number_or_hex_base() == 2_i64
+                {
+                    let product_result = binary_arithmetics::muiltiply_binaries(*left_val.get_numeric(), *right_val.get_numeric());
+                    println!("{}",product_result);
+                    return Response::new();
+                }
                 Response::new().define_numeric(left_val.get_numeric() * right_val.get_numeric())
             }
             Token::Divide => {

@@ -1,4 +1,4 @@
-pub fn normalize_binaries(a: &str, b: &str) -> (Vec<char>, Vec<char>) {
+fn normalize_binaries(a: &str, b: &str) -> (Vec<char>, Vec<char>) {
     let split_a: Vec<&str> = a.split('.').collect();
     let split_b: Vec<&str> = b.split('.').collect();
     let (mut int_a, mut frac_a) = (
@@ -67,4 +67,16 @@ pub fn subtract_binaries(a: f64, b: f64) -> String {
         result.push(char::from_digit(diference as u32, 2).unwrap_or('0'));
     }
     result.into_iter().rev().collect()
+}
+
+pub fn muiltiply_binaries(a: f64, b :f64) -> String{    
+    let mut result = "0".to_string();
+    for (shift, bit_b) in b.to_string().chars().rev().enumerate() {
+        if bit_b == '1' {
+            let mut partial = a.to_string();
+            partial.push_str(&"0".repeat(shift));
+            result = sum_binaries(result.parse::<f64>().unwrap_or(0_f64), partial.parse::<f64>().unwrap_or(0_f64));
+        }
+    }
+    result
 }

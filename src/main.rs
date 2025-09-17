@@ -41,16 +41,16 @@ fn main() {
     // println!("\n{:?}",result_three);
     //
 
-    println!(" **** \n");
-    let mut boolean_test_s = tokenization::tokenization("3764.121 ' 8 -> 2");
-    let expression_test_s = tree_generator::parse_expression(&mut boolean_test_s);
-    println!("\n{:?}",expression_test_s);
-    let result_test_s = general_operator::do_maths(&expression_test_s);
-    print!("{:?}",result_test_s);
+    // println!(" **** \n");
+    // let mut boolean_test_s = tokenization::tokenization("3764.121 ' 8 -> 2");
+    // let expression_test_s = tree_generator::parse_expression(&mut boolean_test_s);
+    // println!("\n{:?}",expression_test_s);
+    // let result_test_s = general_operator::do_maths(&expression_test_s);
+    // print!("{:?}",result_test_s);
 
 
      println!(" **** \n");
-    let mut boolean_test = tokenization::tokenization("101.101 ' 2 -  11.011 ' 2");
+    let mut boolean_test = tokenization::tokenization("1011 ' 2 *  0110 ' 2");
     let expression_test = tree_generator::parse_expression(&mut boolean_test);
     println!("\n{:?}",expression_test);
     let result_test = general_operator::do_maths(&expression_test);

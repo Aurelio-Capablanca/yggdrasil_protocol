@@ -1,18 +1,18 @@
 use crate::structure::token::Token;
 
-fn set_numbers(numbers_buffer: &mut String, tokens: &mut Vec<Token>) {
+fn set_numbers(numbers_buffer: &mut String, tokens: &mut Vec<Token>, mode : &u32) {
     if numbers_buffer.is_empty() {
         return;
     }
-    if numbers_buffer.chars().all(|x| x.is_ascii_digit() || x.eq_ignore_ascii_case(&'.'))  {
+    if numbers_buffer.chars().all(|x| x.is_ascii_digit() || x.eq_ignore_ascii_case(&'.')) &&  *mode != 2_u32  {
         tokens.push(Token::Number(numbers_buffer.parse().unwrap()));
     } else {
-        tokens.push(Token::Strings(numbers_buffer.to_string()))
-    }
+         tokens.push(Token::Strings(numbers_buffer.to_string()))
+    }   
     numbers_buffer.clear();
 }
 
-pub fn tokenization(mathematical_sentence: &str) -> Vec<Token> {
+pub fn tokenization(mathematical_sentence: &str, mode : u32) -> Vec<Token> {
     let mut tokens: Vec<Token> = Vec::new();
     let mut numbers_buffer: String = String::new();
 
@@ -25,7 +25,7 @@ pub fn tokenization(mathematical_sentence: &str) -> Vec<Token> {
             'F' => tokens.push(Token::Boolean(false)),
             '\'' => {
                 chars.next();
-                set_numbers(&mut numbers_buffer, &mut tokens);
+                set_numbers(&mut numbers_buffer, &mut tokens, &mode);
                 let mut base_str = String::new();
                 while let Some(&nexts) = chars.peek(){
                     if nexts.is_ascii_digit() {
@@ -37,11 +37,11 @@ pub fn tokenization(mathematical_sentence: &str) -> Vec<Token> {
                 tokens.push(Token::Base(base_num));
             },
             '+' => {
-                set_numbers(&mut numbers_buffer, &mut tokens);
+                set_numbers(&mut numbers_buffer, &mut tokens, &mode);
                 tokens.push(Token::Plus);
             }
             '-' => {
-                set_numbers(&mut numbers_buffer, &mut tokens);
+                set_numbers(&mut numbers_buffer, &mut tokens, &mode);
                 if let Some('>') = chars.peek() {
                     chars.next();
                     tokens.push(Token::Convert)
@@ -50,16 +50,16 @@ pub fn tokenization(mathematical_sentence: &str) -> Vec<Token> {
                 }
             }
             '*' => {
-                set_numbers(&mut numbers_buffer, &mut tokens);
+                set_numbers(&mut numbers_buffer, &mut tokens, &mode);
                 tokens.push(Token::Multiply);
             }
             '/' => {
-                set_numbers(&mut numbers_buffer, &mut tokens);
+                set_numbers(&mut numbers_buffer, &mut tokens, &mode);
                 tokens.push(Token::Divide);
             }
             '(' => tokens.push(Token::LParenthesis),
             ')' => {
-                set_numbers(&mut numbers_buffer, &mut tokens);
+                set_numbers(&mut numbers_buffer, &mut tokens, &mode);
                 tokens.push(Token::RParenthesis);
             }
             '&' => {
@@ -105,7 +105,7 @@ pub fn tokenization(mathematical_sentence: &str) -> Vec<Token> {
                 }
             }
             ' ' => {
-                set_numbers(&mut numbers_buffer, &mut tokens)
+                set_numbers(&mut numbers_buffer, &mut tokens, &mode)
             }
             _ => {
                 print!("Do nothing! at? {:?}", cases)

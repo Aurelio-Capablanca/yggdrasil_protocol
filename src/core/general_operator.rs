@@ -89,6 +89,13 @@ pub fn do_maths(expression: &Expression) -> Response {
                     right_val.get_numeric(),
                     left_val.get_numeric() / right_val.get_numeric()
                 );
+                if *left.get_number_or_hex_base() == 2_i64
+                    && *right.get_number_or_hex_base() == 2_i64
+                {
+                    let (quotient, reminder) = binary_arithmetics::divide_binaries(*left_val.get_numeric(), *right_val.get_numeric());
+                    println!("{}, {}",quotient, reminder);
+                    return Response::new();
+                }
                 Response::new().define_numeric(left_val.get_numeric() / right_val.get_numeric())
             }
             //booleans too!

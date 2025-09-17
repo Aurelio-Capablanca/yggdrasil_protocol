@@ -77,7 +77,7 @@ pub fn convert_bases(goal_numeric: &f64, base_origin: &i64, base_destiny: &f64) 
     let base = *base_destiny as i64;
     if base_origin == &10_i64 && base_destiny == &16_f64 {
         println!("Go from Decimal To Hex");
-        decimal_to_hex(goal_numeric, base_origin, base_destiny);
+        decimal_to_hex(goal_numeric, /*base_origin, base_destiny*/);
         return 0.0;
     }
     let eval = validate_number_for_base(&goal_numeric.to_string(), &base_origin);
@@ -142,7 +142,7 @@ pub fn convert_bases(goal_numeric: &f64, base_origin: &i64, base_destiny: &f64) 
 
 
 
-fn decimal_to_hex(goal_decimal: &f64, base_origin: &i64, base_destiny: &f64) {   
+fn decimal_to_hex(goal_decimal: &f64, /*base_origin: &i64, base_destiny: &f64*/) {   
     let hex_digits = "0123456789ABCDEF".chars().collect::<Vec<char>>();
     let mut result_integer: Vec<char> = Vec::new();
     let mut result_fractionary : Vec<char> = Vec::new();
@@ -180,7 +180,7 @@ fn hex_to_decimal_formula(mut result: i64, target: String) -> Option<String> {
     Some(result.to_string())
 }
 
-pub fn convert_hex_bases(goal_hex: &String, base_origin: &i64, base_destiny: &f64) -> Option<i64> {
+pub fn convert_hex_bases(goal_hex: &String, /*base_origin: &i64,*/ base_destiny: &f64) -> Option<i64> {
     println!("{}", goal_hex);
     let result = 0i64;
     if *base_destiny != 10_f64 {

@@ -44,3 +44,27 @@ pub fn sum_binaries(a: f64, b: f64) -> String {
     }
     result.into_iter().rev().collect()
 }
+
+pub fn subtract_binaries(a: f64, b: f64) -> String {
+    let (a_part, b_part) = normalize_binaries(&a.to_string(), &b.to_string());
+    let mut borrow = 0;
+    let mut result: Vec<char> = Vec::new();
+
+    for i in (0..a_part.len()).rev() {
+        if *a_part.get(i).unwrap_or(&'_') == '.' {
+            result.push('.');
+            continue;
+        }
+        let bit_a = a_part.get(i).unwrap_or(&'0').to_digit(2).unwrap_or(0);
+        let bit_b = b_part.get(i).unwrap_or(&'0').to_digit(2).unwrap_or(0);
+        let mut diference = bit_a as i32 - bit_b as i32 - borrow as i32;
+        if diference < 0_i32 {
+            diference += 2;
+            borrow = 1;
+        } else {
+            borrow = 0;
+        }
+        result.push(char::from_digit(diference as u32, 2).unwrap_or('0'));
+    }
+    result.into_iter().rev().collect()
+}

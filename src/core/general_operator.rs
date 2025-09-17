@@ -31,9 +31,12 @@ pub fn do_maths(expression: &Expression) -> Response {
                 );
                 if *left.get_number_or_hex_base() == 2_i64
                     && *right.get_number_or_hex_base() == 2_i64
-                {                    
-                    let result = binary_arithmetics::sum_binaries(*left_val.get_numeric(), *right_val.get_numeric());
-                    println!("{}",result);
+                {
+                    let result = binary_arithmetics::sum_binaries(
+                        *left_val.get_numeric(),
+                        *right_val.get_numeric(),
+                    );
+                    println!("{}", result);
                     return Response::new();
                 }
                 Response::new().define_numeric(left_val.get_numeric() + right_val.get_numeric())
@@ -42,18 +45,23 @@ pub fn do_maths(expression: &Expression) -> Response {
                 let left_val = do_maths(&left.to_numeric());
                 let right_val = do_maths(&right.to_numeric());
                 println!(
-                    "Addition: {} - {} = {}",
+                    "Substraction: {} - {} = {}",
                     left_val.get_numeric(),
                     right_val.get_numeric(),
                     left_val.get_numeric() - right_val.get_numeric()
                 );
+                if *left.get_number_or_hex_base() == 2_i64 && *right.get_number_or_hex_base() == 2_i64 {
+                    let result = binary_arithmetics::subtract_binaries(*left_val.get_numeric(), *right_val.get_numeric());
+                    println!("{}",result);
+                    return Response::new();
+                }
                 Response::new().define_numeric(left_val.get_numeric() - right_val.get_numeric())
             }
             Token::Multiply => {
                 let left_val = do_maths(&left.to_numeric());
                 let right_val = do_maths(&right.to_numeric());
                 println!(
-                    "Addition: {} * {} = {}",
+                    "Multiplication: {} * {} = {}",
                     left_val.get_numeric(),
                     right_val.get_numeric(),
                     left_val.get_numeric() * right_val.get_numeric()
@@ -64,7 +72,7 @@ pub fn do_maths(expression: &Expression) -> Response {
                 let left_val = do_maths(&left.to_numeric());
                 let right_val = do_maths(&right.to_numeric());
                 println!(
-                    "Addition: {} / {} = {}",
+                    "Division: {} / {} = {}",
                     left_val.get_numeric(),
                     right_val.get_numeric(),
                     left_val.get_numeric() / right_val.get_numeric()
@@ -91,7 +99,7 @@ pub fn do_maths(expression: &Expression) -> Response {
                 } else {
                     convert_mode::convert_hex_bases(
                         &left.get_hex().to_string(),
-                        &base,
+                        /*&base*/
                         &right.as_numbers(),
                     );
                 }

@@ -50,7 +50,7 @@ fn main() {
 
 
      println!(" **** \n");
-    let mut boolean_test = tokenization::tokenization("101.101 ' 2 +  11.011 ' 2");
+    let mut boolean_test = tokenization::tokenization("101.101 ' 2 -  11.011 ' 2");
     let expression_test = tree_generator::parse_expression(&mut boolean_test);
     println!("\n{:?}",expression_test);
     let result_test = general_operator::do_maths(&expression_test);

@@ -2,6 +2,15 @@ use crate::core::mathematical_modes::{binary_arithmetics, convert_mode};
 use crate::structure::expression::Expression;
 use crate::structure::response::Response;
 use crate::structure::token::Token;
+use lazy_static::lazy_static;
+
+struct precision_holder {
+    precision : i32
+}
+
+lazy_static! {
+    static ref PRECISION : precision_holder =  precision_holder { precision: 3 };
+}
 
 pub fn do_maths(expression: &Expression) -> Response {
     match expression {
@@ -98,7 +107,7 @@ pub fn do_maths(expression: &Expression) -> Response {
                     let (quotient, reminder) = binary_arithmetics::divide_binaries(
                         do_maths(&left).get_string(),
                         do_maths(&right).get_string(),
-                        4,
+                        PRECISION.precision,
                     );
                     println!("{}, {}", quotient, reminder);
                     return Response::new().define_string(quotient);

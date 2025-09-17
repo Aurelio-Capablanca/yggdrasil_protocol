@@ -101,12 +101,15 @@ pub fn multiply_binaries(a: String, b: String) -> String {
     for (shift, bit_b) in complete_b.chars().rev().enumerate() {
         if bit_b == '1' {
             let mut partial = complete_a.to_string();
-            partial.push_str(&"0".repeat(shift));            
+            partial.push_str(&"0".repeat(shift));
             let width = result.len().max(partial.len());
             let partial_padded = format!("{:0>width$}", partial, width = width);
             let result_padded = format!("{:0>width$}", result, width = width);
-            result = sum_binaries(&result_padded, &partial_padded);            
-            println!("Partial: {} + {} = {}", result_padded, partial_padded, result);
+            result = sum_binaries(&result_padded, &partial_padded);
+            println!(
+                "Partial: {} + {} = {}",
+                result_padded, partial_padded, result
+            );
         }
     }
 
@@ -146,12 +149,12 @@ pub fn subtract_binaries(a: &str, b: &str) -> String {
     result.into_iter().rev().collect()
 }
 
-pub fn divide_binaries(a: &str, b: &str, precision : i32) -> (String, String) {
+pub fn divide_binaries(a: &str, b: &str, precision: i32) -> (String, String) {
     let mut quotient = String::new();
     let mut reminder = String::new();
 
     let mut current_point = String::new();
-        
+
     for bit in a.to_string().chars() {
         current_point.push(bit);
         if compare_binaries(&current_point, &b.to_string()) >= 0 {
@@ -161,6 +164,9 @@ pub fn divide_binaries(a: &str, b: &str, precision : i32) -> (String, String) {
             quotient.push('0');
         }
     }
+
+    //reminder = current_point.clone();
+    let integer_frac_reminder = current_point.clone();    
 
     if !current_point.is_empty() && precision > 0_i32 {
         quotient.push('.');
@@ -175,6 +181,14 @@ pub fn divide_binaries(a: &str, b: &str, precision : i32) -> (String, String) {
         }
     }
 
-    reminder = current_point;
-    (quotient, reminder)
+    reminder = current_point.trim_start_matches('0').to_string();
+    if reminder.is_empty() {
+        reminder = "0".to_string();
+    }
+    
+    quotient = quotient.trim_start_matches('0').to_string();
+    if quotient.starts_with('.') {
+        quotient.insert(0, '0');
+    }
+    (quotient, integer_frac_reminder)
 }

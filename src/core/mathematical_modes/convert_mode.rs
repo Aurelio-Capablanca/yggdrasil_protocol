@@ -107,6 +107,8 @@ pub fn convert_bases(goal_numeric: &f64, base_origin: &i64, base_destiny: &f64) 
     //do Integer Part
     let mut result: i64 = integer_member;
     while result != 0 {
+        println!("{} / {}",result,base);
+        println!("{} % {}",result,base);
         let remainder = result % base;
         integer_part.push(remainder);
         result = result / base;
@@ -115,13 +117,14 @@ pub fn convert_bases(goal_numeric: &f64, base_origin: &i64, base_destiny: &f64) 
     integer_part.reverse();
     //do Decimal Part
     for _ in 0..limit_decimals {
+        println!("{} * {}",decimal_member,base_destiny);
         let fraction = decimal_member * base_destiny;
         let number = fraction.floor() as i64;
         decimal_part.push(number);
         decimal_member = fraction - fraction.floor();
         if decimal_member == 0.0 {
             break;
-        }
+        }        
         println!("Result = {:?}; reminder = {:?}", result, fraction);
     }
     //Set Order

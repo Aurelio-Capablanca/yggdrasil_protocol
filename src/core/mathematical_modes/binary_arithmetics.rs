@@ -55,29 +55,6 @@ fn compare_binaries(a: &str, b: &str) -> i32 {
     }
 }
 
-pub fn sum_binaries(a: &str, b: &str) -> String {
-    let (a_part, b_part) = normalize_binaries(&a.to_string(), &b.to_string());
-    println!("{:?} + {:?}", a_part, b_part);
-    let mut carry = 0;
-    let mut result: Vec<char> = Vec::new();
-    for i in (0..a_part.len()).rev() {
-        if *a_part.get(i).unwrap_or(&'_') == '.' {
-            result.push('.');
-            continue;
-        }
-        let bit_a = a_part.get(i).unwrap_or(&'0').to_digit(2).unwrap_or(0);
-        let bit_b = b_part.get(i).unwrap_or(&'0').to_digit(2).unwrap_or(0);
-        let b_sum = bit_a + bit_b + carry;
-        println!("{} + {} = {}",bit_a,bit_b,carry);
-        result.push(std::char::from_digit(b_sum % 2, 2).unwrap_or('0'));
-        carry = b_sum / 2;
-    }
-    if carry > 0 {
-        result.push('1');
-    }
-    result.into_iter().rev().collect()
-}
-
 fn clean_fraction(value: String) -> (String, String) {
     let set = value.to_string();
     let splitter: Vec<&str> = set.split('.').collect();
@@ -87,6 +64,45 @@ fn clean_fraction(value: String) -> (String, String) {
         None => "".to_string(),
     };
     (integer_part, fract_part)
+}
+
+fn symbol_law_binaries(a: &str, b: &str) -> i32 {
+    let a_member: String = a.chars().filter(|&c| c != '.').collect();
+    let b_member: String = b.chars().filter(|&c| c != '.').collect();
+    if a_member == b_member {
+        0
+    } else if a_member.len() != b_member.len() {
+        if a_member.len() > b_member.len() {
+            1
+        } else {
+            -1
+        }
+    } else {
+        if a_member > b_member { 1 } else { -1 }
+    }
+}
+
+pub fn sum_binaries(a: &str, b: &str) -> String {
+    let (a_part, b_part) = normalize_binaries(&a.to_string(), &b.to_string());
+    println!("{:?} + {:?}", a_part, b_part);
+    let mut carry = 0;
+    let mut result: Vec<char> = Vec::new();
+    for i in (0..a_part.len()).rev() {
+        if a_part[i] == '.' {
+            result.push('.');
+            continue;
+        }
+        let bit_a = a_part.get(i).unwrap_or(&'0').to_digit(2).unwrap_or(0);
+        let bit_b = b_part.get(i).unwrap_or(&'0').to_digit(2).unwrap_or(0);
+        let b_sum = bit_a + bit_b + carry;
+        println!("{} + {} = {}", bit_a, bit_b, carry);
+        result.push(std::char::from_digit(b_sum % 2, 2).unwrap_or('0'));
+        carry = b_sum / 2;
+    }
+    if carry > 0 {
+        result.push('1');
+    }
+    result.into_iter().rev().collect()
 }
 
 pub fn multiply_binaries(a: String, b: String) -> String {
@@ -103,7 +119,7 @@ pub fn multiply_binaries(a: String, b: String) -> String {
         if bit_b == '1' {
             let mut partial = complete_a.to_string();
             partial.push_str(&"0".repeat(shift));
-            println!("{}",partial);
+            println!("{}", partial);
             let width = result.len().max(partial.len());
             let partial_padded = format!("{:0>width$}", partial, width = width);
             let result_padded = format!("{:0>width$}", result, width = width);
@@ -127,19 +143,28 @@ pub fn multiply_binaries(a: String, b: String) -> String {
 }
 
 pub fn subtract_binaries(a: &str, b: &str) -> String {
-    let (a_part, b_part) = normalize_binaries(&a.to_string(), &b.to_string());
     let mut borrow = 0;
     let mut result: Vec<char> = Vec::new();
 
+    let mut a_str = a.to_string();
+    let mut b_str = b.to_string();
+    let mut negative = false;
+    if symbol_law_binaries(&a, &b) < 0 {
+        std::mem::swap(&mut a_str, &mut b_str);
+        negative = true;
+    }
+
+    let (a_part, b_part) = normalize_binaries(&a_str, &b_str);
+
     for i in (0..a_part.len()).rev() {
-        if *a_part.get(i).unwrap_or(&'_') == '.' {
+        if a_part[i] == '.' {
             result.push('.');
             continue;
         }
         let bit_a = a_part.get(i).unwrap_or(&'0').to_digit(2).unwrap_or(0);
         let bit_b = b_part.get(i).unwrap_or(&'0').to_digit(2).unwrap_or(0);
         let mut diference = bit_a as i32 - bit_b as i32 - borrow as i32;
-        println!("{} - {} = {}",bit_a,bit_b,diference);
+        println!("{} - {} = {}", bit_a, bit_b, diference);
         if diference < 0_i32 {
             diference += 2;
             borrow = 1;
@@ -147,9 +172,18 @@ pub fn subtract_binaries(a: &str, b: &str) -> String {
             borrow = 0;
         }
         result.push(char::from_digit(diference as u32, 2).unwrap_or('0'));
-        println!("{} - {} = {:?}",bit_a,bit_b,result)
+        println!("{} - {} = {:?}", bit_a, bit_b, result)
     }
-    result.into_iter().rev().collect()
+
+    let mut results_str: String = result.into_iter().rev().collect();
+    while results_str.starts_with('0') && !results_str.starts_with("0.") && results_str.len() > 1 {
+        results_str.remove(0);
+    }
+    if negative {
+        results_str = format!("-{}", results_str);
+    }
+
+    results_str
 }
 
 pub fn divide_binaries(a: &str, b: &str, precision: i32) -> (String, String) {
@@ -169,7 +203,7 @@ pub fn divide_binaries(a: &str, b: &str, precision: i32) -> (String, String) {
     }
 
     //reminder = current_point.clone();
-    let integer_frac_reminder = current_point.clone();    
+    let integer_frac_reminder = current_point.clone();
 
     if !current_point.is_empty() && precision > 0_i32 {
         quotient.push('.');
@@ -188,7 +222,7 @@ pub fn divide_binaries(a: &str, b: &str, precision: i32) -> (String, String) {
     if reminder.is_empty() {
         reminder = "0".to_string();
     }
-    
+
     quotient = quotient.trim_start_matches('0').to_string();
     if quotient.starts_with('.') {
         quotient.insert(0, '0');

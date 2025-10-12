@@ -1,78 +1,90 @@
 mod core;
 mod structure;
 
-use crate::core::{
-    general_operator::{self, do_maths},
-    tokenization::{self, tokenization},
-    tree_generator::{self, parse_expression},
-};
+use crate::{core::{
+    general_operator::{self},
+    tokenization::{self},
+    tree_generator::{self},
+}, structure::domain::Domain};
 
 fn main() {
-    //Decimal to Octal
-    let mut one_e = tokenization::tokenization("32059.25 ' 10 -> 8", 1_u32);
+
+
+    let mut one_e = tokenization::tokenization("(34543 +23433) + 89794 * (6745 + 666) / 2", 1_u32);
     let tree_one = tree_generator::parse_expression(&mut one_e);
-    let result_one = general_operator::do_maths(&tree_one);
+
+    let domain_settings = Domain::new();
+
+    let result_one = general_operator::do_maths(&tree_one, &domain_settings);
     println!("1. = {:?}", result_one);
 
-    let mut two_e = tokenization::tokenization("834765.645 ' 10 -> 8", 1_u32);
-    let tree_two = tree_generator::parse_expression(&mut two_e);
-    let result_two = general_operator::do_maths(&tree_two);
-    println!("2. = {:?}", result_two);
 
-    //Octal to Decimal
-    let mut three_e = tokenization::tokenization("34727.36 ' 8 -> 10", 1_u32);
-    let tree_three = tree_generator::parse_expression(&mut three_e);
-    let result_three = general_operator::do_maths(&tree_three);
-    println!("3. = {:?}", result_three);
 
-    let mut four_e = tokenization::tokenization("24787645.655 ' 8 -> 10", 1_u32);
-    let tree_four = tree_generator::parse_expression(&mut four_e);
-    let result_four = general_operator::do_maths(&tree_four);
-    println!("4. = {:?}", result_four);
+    //Decimal to Octal
+    // let mut one_e = tokenization::tokenization("32059.25 ' 10 -> 8", 1_u32);
+    // let tree_one = tree_generator::parse_expression(&mut one_e);
+    // let result_one = general_operator::do_maths(&tree_one);
+    // println!("1. = {:?}", result_one);
 
-    //Binary to Octal
-    let mut five_e = tokenization::tokenization("111111000.10010 ' 2 -> 8", 1_u32);
-    let tree_five = tree_generator::parse_expression(&mut five_e);
-    let result_five = general_operator::do_maths(&tree_five);
-    println!("5. = {:?}", result_five);
+    // let mut two_e = tokenization::tokenization("834765.645 ' 10 -> 8", 1_u32);
+    // let tree_two = tree_generator::parse_expression(&mut two_e);
+    // let result_two = general_operator::do_maths(&tree_two);
+    // println!("2. = {:?}", result_two);
 
-    let mut six_e = tokenization::tokenization("10110010100101.001101 ' 2 -> 8", 1_u32);
-    let tree_six = tree_generator::parse_expression(&mut six_e);
-    let result_six = general_operator::do_maths(&tree_six);
-    println!("6. = {:?}", result_six);
+    // //Octal to Decimal
+    // let mut three_e = tokenization::tokenization("34727.36 ' 8 -> 10", 1_u32);
+    // let tree_three = tree_generator::parse_expression(&mut three_e);
+    // let result_three = general_operator::do_maths(&tree_three);
+    // println!("3. = {:?}", result_three);
 
-    //Octal to Binary
-    let mut seven_e = tokenization::tokenization("5064.50 ' 8 -> 2", 1_u32);
-    let tree_seven = tree_generator::parse_expression(&mut seven_e);
-    let result_seven = general_operator::do_maths(&tree_seven);
-    println!("7. = {:?}", result_seven);
+    // let mut four_e = tokenization::tokenization("24787645.655 ' 8 -> 10", 1_u32);
+    // let tree_four = tree_generator::parse_expression(&mut four_e);
+    // let result_four = general_operator::do_maths(&tree_four);
+    // println!("4. = {:?}", result_four);
 
-    let mut eight_e = tokenization::tokenization("3764.121 ' 8 -> 2", 1_u32);
-    let tree_eight = tree_generator::parse_expression(&mut eight_e);
-    let result_eight = general_operator::do_maths(&tree_eight);
-    println!("8. = {:?}", result_eight);
+    // //Binary to Octal
+    // let mut five_e = tokenization::tokenization("111111000.10010 ' 2 -> 8", 1_u32);
+    // let tree_five = tree_generator::parse_expression(&mut five_e);
+    // let result_five = general_operator::do_maths(&tree_five);
+    // println!("5. = {:?}", result_five);
 
-    // Decimal to Hexadecimal
-    let mut ten_e = tokenization::tokenization("1405.28 ' 10 -> 16", 1_u32);
-    let tree_ten = tree_generator::parse_expression(&mut ten_e);
-    let result_ten = general_operator::do_maths(&tree_ten);
-    println!("9. = {:?}", result_ten);
+    // let mut six_e = tokenization::tokenization("10110010100101.001101 ' 2 -> 8", 1_u32);
+    // let tree_six = tree_generator::parse_expression(&mut six_e);
+    // let result_six = general_operator::do_maths(&tree_six);
+    // println!("6. = {:?}", result_six);
 
-    let mut nine_e = tokenization::tokenization("61476 ' 10 -> 16", 1_u32);
-    let tree_nine = tree_generator::parse_expression(&mut nine_e);
-    let result_nine = general_operator::do_maths(&tree_nine);
-    println!("10. = {:?}", result_nine);
+    // //Octal to Binary
+    // let mut seven_e = tokenization::tokenization("5064.50 ' 8 -> 2", 1_u32);
+    // let tree_seven = tree_generator::parse_expression(&mut seven_e);
+    // let result_seven = general_operator::do_maths(&tree_seven);
+    // println!("7. = {:?}", result_seven);
 
-    //Hex to Decimal
-    let mut eleven_e = tokenization::tokenization("defa.1ae ' 16 -> 10", 1_u32);
-    let tree_eleven = tree_generator::parse_expression(&mut eleven_e);
-    let result_eleven = general_operator::do_maths(&tree_eleven);
-    println!("11. = {:?}", result_eleven);
+    // let mut eight_e = tokenization::tokenization("3764.121 ' 8 -> 2", 1_u32);
+    // let tree_eight = tree_generator::parse_expression(&mut eight_e);
+    // let result_eight = general_operator::do_maths(&tree_eight);
+    // println!("8. = {:?}", result_eight);
 
-    let mut twelve_e = tokenization::tokenization("bea210.c29 ' 16 -> 10", 1_u32);
-    let tree_twelve = tree_generator::parse_expression(&mut twelve_e);
-    let result_twelve = general_operator::do_maths(&tree_twelve);
-    println!("12. = {:?}", result_twelve);
+    // // Decimal to Hexadecimal
+    // let mut ten_e = tokenization::tokenization("1405.28 ' 10 -> 16", 1_u32);
+    // let tree_ten = tree_generator::parse_expression(&mut ten_e);
+    // let result_ten = general_operator::do_maths(&tree_ten);
+    // println!("9. = {:?}", result_ten);
+
+    // let mut nine_e = tokenization::tokenization("61476 ' 10 -> 16", 1_u32);
+    // let tree_nine = tree_generator::parse_expression(&mut nine_e);
+    // let result_nine = general_operator::do_maths(&tree_nine);
+    // println!("10. = {:?}", result_nine);
+
+    // //Hex to Decimal
+    // let mut eleven_e = tokenization::tokenization("defa.1ae ' 16 -> 10", 1_u32);
+    // let tree_eleven = tree_generator::parse_expression(&mut eleven_e);
+    // let result_eleven = general_operator::do_maths(&tree_eleven);
+    // println!("11. = {:?}", result_eleven);
+
+    // let mut twelve_e = tokenization::tokenization("bea210.c29 ' 16 -> 10", 1_u32);
+    // let tree_twelve = tree_generator::parse_expression(&mut twelve_e);
+    // let result_twelve = general_operator::do_maths(&tree_twelve);
+    // println!("12. = {:?}", result_twelve);
 
     //Hex to Binary
 

@@ -26,6 +26,7 @@ where
 }
 
 fn parse_unary(tokens: &mut Vec<Token>) -> Expression {
+    
     if let Some(token) = tokens.first() {
         match token {
             Token::Not => {

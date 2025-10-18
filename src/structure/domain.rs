@@ -27,13 +27,12 @@ impl Domain {
         &self.mode
     }
 
-    //setting
-    pub fn status(mut self, status_in: bool) -> Self {
+    pub fn get_status(mut self, status_in: bool) -> Self {
         self.status = status_in;
         self
     }
 
-    pub fn command(mut self, command_in: String) -> Self {
+    pub fn get_command(mut self, command_in: String) -> Self {
         self.command = command_in;
         self
     }

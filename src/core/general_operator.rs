@@ -3,8 +3,6 @@ use crate::structure::domain::Domain;
 use crate::structure::expression::Expression;
 use crate::structure::response::Response;
 use crate::structure::token::Token;
-use lazy_static::lazy_static;
-
 
 
 pub fn do_maths(expression: &Expression, params: &Domain) -> Response {

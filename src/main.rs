@@ -9,11 +9,26 @@ use crate::{core::{
 
 fn main() {
     
-    let mut one_e = tokenization::tokenization("(34543 +23433) + 89794 * (6745 + 666) / 2", 1_u32);
+    // let mut one_e = tokenization::tokenization("(34543 +23433) + 89794 * (6745 + 666) / 2", 1_u32);
+    // let tree_one = tree_generator::parse_expression(&mut one_e);
+    // let domain_settings = Domain::new();
+    // let result_one = general_operator::do_maths(&tree_one, &domain_settings);
+    // println!("1. = {:?}", result_one);
+
+    /* when A=1, B=0 y C=1 */
+     let mut one_e = tokenization::tokenization("1 && !0 || 1 && 0 || 0 && !1 || 0 && !1", 1_u32);
     let tree_one = tree_generator::parse_expression(&mut one_e);
     let domain_settings = Domain::new();
     let result_one = general_operator::do_maths(&tree_one, &domain_settings);
     println!("1. = {:?}", result_one);
+
+
+    // let mut one_e = tokenization::tokenization("!(!(1 && 0) || (0 && 1) || (!1 || !0))", 1_u32);
+    // let tree_one = tree_generator::parse_expression(&mut one_e);
+    // let domain_settings = Domain::new();
+    // let result_one = general_operator::do_maths(&tree_one, &domain_settings);
+    // println!("1. = {:?}", result_one);
+
 
     //Decimal to Octal
     // let mut one_e = tokenization::tokenization("32059.25 ' 10 -> 8", 1_u32);

@@ -1,18 +1,22 @@
 use crate::structure::token::Token;
 
-fn set_numbers(numbers_buffer: &mut String, tokens: &mut Vec<Token>, mode : &u32) {
+fn set_numbers(numbers_buffer: &mut String, tokens: &mut Vec<Token>, mode: &u32) {
     if numbers_buffer.is_empty() {
         return;
     }
-    if numbers_buffer.chars().all(|x| x.is_ascii_digit() || x.eq_ignore_ascii_case(&'.')) &&  *mode != 2_u32  {
+    if numbers_buffer
+        .chars()
+        .all(|x| x.is_ascii_digit() || x.eq_ignore_ascii_case(&'.'))
+        && *mode != 2_u32
+    {
         tokens.push(Token::Number(numbers_buffer.parse().unwrap()));
     } else {
-         tokens.push(Token::Strings(numbers_buffer.to_string()))
-    }   
+        tokens.push(Token::Strings(numbers_buffer.to_string()))
+    }
     numbers_buffer.clear();
 }
 
-pub fn tokenization(mathematical_sentence: &str, mode : u32) -> Vec<Token> {
+pub fn tokenization(mathematical_sentence: &str, mode: u32) -> Vec<Token> {
     let mut tokens: Vec<Token> = Vec::new();
     let mut numbers_buffer: String = String::new();
 

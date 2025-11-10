@@ -1,14 +1,16 @@
 mod core;
 mod structure;
 
-use crate::{core::{
-    general_operator::{self},
-    tokenization::{self},
-    tree_generator::{self},
-}, structure::domain::Domain};
+use crate::{
+    core::{
+        general_operator::{self},
+        tokenization::{self},
+        tree_generator::{self},
+    },
+    structure::domain::Domain,
+};
 
 fn main() {
-    
     // let mut one_e = tokenization::tokenization("(34543 +23433) + 89794 * (6745 + 666) / 2", 1_u32);
     // let tree_one = tree_generator::parse_expression(&mut one_e);
     // let domain_settings = Domain::new();
@@ -16,19 +18,17 @@ fn main() {
     // println!("1. = {:?}", result_one);
 
     /* when A=1, B=0 y C=1 */
-     let mut one_e = tokenization::tokenization("1 && !0 || 1 && 0 || 0 && !1 || 0 && !1", 1_u32);
-    let tree_one = tree_generator::parse_expression(&mut one_e);
+    let mut one_e = tokenization::tokenization("1 && !0 || 1 && 0 || 0 && !1 || 0 && !1", 1_u32);
+    let tree_one = tree_generator::parse_expression(&mut one_e);    
     let domain_settings = Domain::new();
     let result_one = general_operator::do_maths(&tree_one, &domain_settings);
     println!("1. = {:?}", result_one);
-
 
     // let mut one_e = tokenization::tokenization("!(!(1 && 0) || (0 && 1) || (!1 || !0))", 1_u32);
     // let tree_one = tree_generator::parse_expression(&mut one_e);
     // let domain_settings = Domain::new();
     // let result_one = general_operator::do_maths(&tree_one, &domain_settings);
     // println!("1. = {:?}", result_one);
-
 
     //Decimal to Octal
     // let mut one_e = tokenization::tokenization("32059.25 ' 10 -> 8", 1_u32);
@@ -100,15 +100,13 @@ fn main() {
 
     //Binary to Hex
 
-
-
     /************************ */
     //Sums and Subtracts
 
     // let mut twenty_one_e = tokenization::tokenization(" 111111000111000111.11111111 ' 2 + 11111000100101010.00001+111111.1101 ' 2 + 1010101010000111111.1110010 ' 2 ", 2_u32);
     // let tree_twenty_one = tree_generator::parse_expression(&mut twenty_one_e);
     // let result_twenty_one = general_operator::do_maths(&tree_twenty_one);
-    // println!("21. = {:?}", result_twenty_one);    
+    // println!("21. = {:?}", result_twenty_one);
 
     // let mut twenty_two_e = tokenization::tokenization("101111101111011111.001 ' 2  + 100000011110010101.101010110 ' 2 + 11111001100010001110001111.11110011 ' 2 + 111100111.10110 ' 2", 2_u32);
     // let tree_twenty_two = tree_generator::parse_expression(&mut twenty_two_e);

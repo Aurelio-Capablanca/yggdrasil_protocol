@@ -1,6 +1,8 @@
 mod core;
 mod structure;
 
+use std::io::Read;
+
 use crate::{
     core::{
         general_operator::{self},
@@ -18,11 +20,29 @@ fn main() {
     // println!("1. = {:?}", result_one);
 
     /* when A=1, B=0 y C=1 */
-    let mut one_e = tokenization::tokenization("1 && !0 || 1 && 0 || 0 && !1 || 0 && !1", 1_u32);
-    let tree_one = tree_generator::parse_expression(&mut one_e);    
-    let domain_settings = Domain::new();
-    let result_one = general_operator::do_maths(&tree_one, &domain_settings);
-    println!("1. = {:?}", result_one);
+    // let mut one_e = tokenization::tokenization("1 && !0 || 1 && 0 || 0 && !1 || 0 && !1", 1_u32);
+    // let tree_one = tree_generator::parse_expression(&mut one_e);
+    // let domain_settings = Domain::new();
+    // let result_one = general_operator::do_maths(&tree_one, &domain_settings);
+    // println!("1. = {:?}", result_one);
+
+    let mut flag = true;
+    let mut input = String::new();
+    while flag {
+        std::io::stdin().read_line(&mut input).unwrap_or(0_usize);
+        let mut one_e =
+            tokenization::tokenization(&input, 1_u32);
+        let tree_one = tree_generator::parse_expression(&mut one_e);
+        let domain_settings = Domain::new();
+        let result_one = general_operator::do_maths(&tree_one, &domain_settings);
+        println!("1. = {:?}", result_one);
+
+        println!("do you want to continue? y/n");
+        std::io::stdin().read_line(&mut input).unwrap();
+        if input.trim().eq_ignore_ascii_case("n") {
+            flag = false;
+        } 
+    }
 
     // let mut one_e = tokenization::tokenization("!(!(1 && 0) || (0 && 1) || (!1 || !0))", 1_u32);
     // let tree_one = tree_generator::parse_expression(&mut one_e);
@@ -38,7 +58,8 @@ fn main() {
 
     // let mut two_e = tokenization::tokenization("834765.645 ' 10 -> 8", 1_u32);
     // let tree_two = tree_generator::parse_expression(&mut two_e);
-    // let result_two = general_operator::do_maths(&tree_two);
+    // let domain_settings = Domain::new();
+    // let result_two = general_operator::do_maths(&tree_two, &domain_settings);
     // println!("2. = {:?}", result_two);
 
     // //Octal to Decimal
